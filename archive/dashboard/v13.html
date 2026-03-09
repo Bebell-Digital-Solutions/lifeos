@@ -305,6 +305,22 @@
             padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border);
         }
 
+
+        .live-badge:hover {
+            max-width: 250px;
+            padding: 8px 25px;
+            background: var(--bg-hover);
+            border-color: var(--success);
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 15px rgba(81, 207, 102, 0.2);
+            transform: scale(1.05);
+        }
+
+        .live-badge i { animation: pulse 2s infinite; }
+
+
+        
+
         .content-area { flex-grow: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
 
         .view-section { display: none; animation: fadeIn 0.4s ease-in-out; }
