@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS | Command Center</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500&family=Fira+Code&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for Life Score -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container" id="os-main-container">
+    <div class="sidebar" id="os-sidebar">
+        <div class="sidebar-brand" id="os-brand">
+            <i class="fas fa-fingerprint" id="brand-icon"></i>
+            <h2 id="brand-title">LIFE OS</h2>
+            <div class="version-tag" id="brand-version">Sys. Version 2.0.4</div>
+        </div>
+
+        <!-- Testing different URLs -->
+        <button class="nav-btn active-btn" data-type="native" data-target="dashboard" id="nav-dashboard">
+            <i class="fas fa-satellite-dish"></i> Life OS
+        </button>
+        
+        <!-- Iframe Test: Loading example.com inside the OS -->
+        <button class="nav-btn" data-type="iframe" data-url="https://example.com" id="nav-knowledge">
+            <i class="fas fa-brain"></i> Knowledge Lib
+        </button>
+        
+        <!-- Placeholder for your future productivity page -->
+        <button class="nav-btn" data-type="iframe" data-url="productivity.html" id="nav-tools">
+            <i class="fas fa-tools"></i> Practical Tools
+        </button>
+        
+        <!-- Example of another iframe load -->
+        <button class="nav-btn" data-type="iframe" data-url="https://www.wikipedia.org" id="nav-skills">
+            <i class="fas fa-route"></i> Skill Paths
+        </button>
+
+        <button class="nav-btn" data-type="iframe" data-url="community.html" id="nav-community">
+            <i class="fas fa-users"></i> Community
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="challenges.html" id="nav-challenges">
+            <i class="fas fa-bolt"></i> Challenges
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="vault.html" id="nav-vault">
+            <i class="fas fa-archive"></i> Resource Vault
+        </button>
+
+        <div class="sidebar-footer" id="os-footer">
+            <div class="version-tag" id="footer-version">
+                <i class="fa-solid fa-code-branch"></i> v2.0.26-BETA
+            </div>
+        </div>
+    </div>
+
+    <div class="main" id="os-main-area">
+        <div class="main-header" id="os-header">
+            <div class="header-search" id="search-container">
+                <i class="fas fa-search muted"></i>
+                <input type="text" id="global-search-input" placeholder="Search knowledge, tools, or ask AI...">
+            </div>
+            <div class="live-badge" id="system-status-badge">
+                <i class="fas fa-circle"></i> OS Active
+            </div>
+        </div>
+
+
+
+
+
+
+      
+
+        <div class="content-area" id="os-content-area">
+            
+            <section id="dashboard" class="view-section active">
+                <h2 class="page-title" id="page-title-dashboard"><i class="fas fa-terminal"></i> Command Center</h2>
+
+
+
+              
+                
+                <div class="dashboard-2col" id="dashboard-row-1">
+                    <!-- LIFE SCORE RADAR -->
+                    <div class="card" id="card-life-score">
+                        <h3 id="title-life-score"><i class="fas fa-crosshairs"></i> Life Score by Area</h3>
+                        <div class="chart-container" id="chart-container-radar">
+                            <canvas id="lifeScoreChart"></canvas>
+                        </div>
+                        <div style="text-align: center; margin-top: 15px;" id="life-score-avg-container">
+                            <span class="metric-small" style="color: var(--primary);" id="metric-system-avg">System Average: 63/100</span>
+                        </div>
+                    </div>
+
+
+
+
+                  
+
+                    <!-- DAILY ROUTINES -->
+                    <div class="card" id="card-daily-routines">
+                        <h3 id="title-daily-routines"><i class="fas fa-check-double"></i> Daily Operating Protocols</h3>
+                        <div class="routine-item done" id="routine-1" onclick="toggleRoutine(this)">
+                            <div class="r-check"></div>
+                            <span class="r-text" id="routine-1-txt">Hydration (1L morning) & Supplements</span>
+                            <span class="muted" style="margin-left:auto; font-family: var(--font-code);" id="routine-1-time">07:00</span>
+                        </div>
+                        <div class="routine-item done" id="routine-2" onclick="toggleRoutine(this)">
+                            <div class="r-check"></div>
+                            <span class="r-text" id="routine-2-txt">Review active goals & daily schedule</span>
+                            <span class="muted" style="margin-left:auto; font-family: var(--font-code);" id="routine-2-time">07:30</span>
+                        </div>
+                        <div class="routine-item" id="routine-3" onclick="toggleRoutine(this)">
+                            <div class="r-check"></div>
+                            <span class="r-text" id="routine-3-txt">Physical Training (45 mins minimum)</span>
+                            <span class="muted" style="margin-left:auto; font-family: var(--font-code);" id="routine-3-time">18:00</span>
+                        </div>
+                        <div class="routine-item" id="routine-4" onclick="toggleRoutine(this)">
+                            <div class="r-check"></div>
+                            <span class="r-text" id="routine-4-txt">Financial protocol (Log expenses)</span>
+                            <span class="muted" style="margin-left:auto; font-family: var(--font-code);" id="routine-4-time">20:00</span>
+                        </div>
+                        <div class="routine-item" id="routine-5" onclick="toggleRoutine(this)">
+                            <div class="r-check"></div>
+                            <span class="r-text" id="routine-5-txt">Strategic reading (20 pages minimum)</span>
+                            <span class="muted" style="margin-left:auto; font-family: var(--font-code);" id="routine-5-time">21:30</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+              
+
+                <div class="dashboard" id="dashboard-row-2">
+                    <!-- ACTIVE GOALS -->
+                    <div class="card" id="card-active-goals">
+                        <h3 id="title-active-goals"><i class="fas fa-flag-checkered"></i> Active Goals</h3>
+                        
+                        <div style="margin-bottom: 20px;" id="goal-container-1">
+                            <div class="flex-between" style="border:none; padding:0 0 5px 0;">
+                                <span style="font-size: 14px;" id="goal-1-title">Establish $10k Emergency Fund</span>
+                                <span class="muted" style="font-family: var(--font-code);" id="goal-1-txt">85%</span>
+                            </div>
+                            <div class="goal-bar"><div class="goal-fill" id="goal-1-bar" style="width: 85%;"></div></div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;" id="goal-container-2">
+                            <div class="flex-between" style="border:none; padding:0 0 5px 0;">
+                                <span style="font-size: 14px;" id="goal-2-title">Launch Digital Product v1.0</span>
+                                <span class="muted" style="font-family: var(--font-code);" id="goal-2-txt">40%</span>
+                            </div>
+                            <div class="goal-bar"><div class="goal-fill" id="goal-2-bar" style="width: 40%; background: var(--warning); box-shadow: 0 0 10px var(--warning);"></div></div>
+                        </div>
+
+                        <div id="goal-container-3">
+                            <div class="flex-between" style="border:none; padding:0 0 5px 0;">
+                                <span style="font-size: 14px;" id="goal-3-title">Drop Body Fat to 15%</span>
+                                <span class="muted" style="font-family: var(--font-code);" id="goal-3-txt">60%</span>
+                            </div>
+                            <div class="goal-bar"><div class="goal-fill" id="goal-3-bar" style="width: 60%; background: var(--success); box-shadow: 0 0 10px var(--success);"></div></div>
+                        </div>
+                    </div>
+
+
+
+
+                  
+
+                    <!-- PERSONAL FINANCES -->
+                    <div class="card" id="card-financial-hub">
+                        <h3 id="title-financial-hub"><i class="fas fa-wallet"></i> Financial Hub</h3>
+                        <div class="metric" id="widget-net-worth">$42,550.00</div>
+                        <div class="muted" id="label-net-worth">Total Liquid Net Worth</div>
+                        
+                        <div style="margin-top: 25px;" id="finance-breakdown-container">
+                            <div class="flex-between" id="finance-row-income">
+                                <span style="font-size: 14px; color: var(--text-muted);">Monthly Income</span>
+                                <span style="font-family: var(--font-code); color: var(--success);" id="widget-income">+$6,200.00</span>
+                            </div>
+                            <div class="flex-between" id="finance-row-expenses">
+                                <span style="font-size: 14px; color: var(--text-muted);">Fixed Expenses</span>
+                                <span style="font-family: var(--font-code); color: var(--danger);" id="widget-expenses">-$2,850.00</span>
+                            </div>
+                            <div class="flex-between" id="finance-row-investments">
+                                <span style="font-size: 14px; color: var(--text-muted);">Investment Allocation</span>
+                                <span style="font-family: var(--font-code); color: var(--primary);" id="widget-investments">-$1,000.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                  
+
+                    <!-- RECOMMENDED ACTIONS -->
+                    <div class="card" id="card-progress-engine">
+                        <h3 id="title-progress-engine"><i class="fas fa-arrow-trend-up"></i> Progress Engine</h3>
+                        <p class="muted" style="margin-top: -10px; margin-bottom: 15px;" id="desc-progress-engine">Based on your Life Score, system recommends:</p>
+                        
+                        <div class="learning-card" id="rec-action-1">
+                            <div class="learning-icon"><i class="fas fa-briefcase"></i></div>
+                            <div class="learning-content">
+                                <h4 id="rec-1-title">Offer Creation Playbook</h4>
+                                <p id="rec-1-desc">Increase your Business score</p>
+                            </div>
+                            <div class="learning-meta" id="rec-1-meta">Playbook<br>+10 Pts</div>
+                        </div>
+
+                        <div class="learning-card" id="rec-action-2">
+                            <div class="learning-icon"><i class="fas fa-calculator"></i></div>
+                            <div class="learning-content">
+                                <h4 id="rec-2-title">Tax Optimization Tool</h4>
+                                <p id="rec-2-desc">Action required for Finance</p>
+                            </div>
+                            <div class="learning-meta" id="rec-2-meta">Tool<br>+5 Pts</div>
+                        </div>
+                        
+                        <div class="learning-card" id="rec-action-3">
+                            <div class="learning-icon"><i class="fas fa-dumbbell"></i></div>
+                            <div class="learning-content">
+                                <h4 id="rec-3-title">30-Day Health Reset</h4>
+                                <p id="rec-3-desc">Join the upcoming challenge</p>
+                            </div>
+                            <div class="learning-meta" id="rec-3-meta">Mission<br>+15 Pts</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="iframe-container" class="view-section" style="height: 100%;">
+                <i class="fas fa-circle-notch fa-spin" id="iframe-loader"></i>
+                <iframe id="app-frame" src=""></iframe>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+  
+
+<!-- AI Popup Container -->
+<div id="ai-popup-container">
+    <div class="ai-popup-header">
+        <span><i class="fas fa-robot"></i> System AI Agent</span>
+        <button id="close-ai-btn" onclick="toggleAIPopup()"><i class="fas fa-times"></i></button>
+    </div>
+    <iframe id="ai-iframe" src="https://example.com"></iframe>
+</div>
+
+<!-- AI Assistant Floating Action Button -->
+<button class="ai-assistant-btn" id="ai-trigger-btn" title="Ask System AI" onclick="toggleAIPopup()">
+    <i class="fas fa-robot"></i>
+</button>
+
+
+
+  
+
+
+
+
+
+  
+
+<!-- Link to external JS file -->
+<script src="script.js"></script>
+</body>
+</html>
