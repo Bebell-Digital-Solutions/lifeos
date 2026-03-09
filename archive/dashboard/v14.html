@@ -301,11 +301,21 @@
         .header-search input { background: none; border: none; color: var(--text-main); width: 100%; outline: none; margin-left: 10px; }
 
         .live-badge {
-            color: var(--success); font-size: 12px; font-family: var(--font-tech);
-            display: inline-flex; align-items: center; gap: 8px; background: var(--bg-card);
-            padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border);
+            color: var(--success);
+            font-size: 12px;
+            font-family: var(--font-tech);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            transition: all 0.4s;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
         }
-
 
         .live-badge:hover {
             max-width: 250px;
