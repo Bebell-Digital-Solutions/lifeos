@@ -471,6 +471,81 @@
 
 
 
+        
+/* Banner Styles */
+.banner-container {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+}
+
+.banner-container:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.banner-container:hover .banner-image {
+    transform: scale(1.02);
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(255,80,17,0.2) 0%, rgba(0,0,0,0) 50%, rgba(255,80,17,0.2) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.banner-container:hover .banner-overlay {
+    opacity: 1;
+}
+
+.banner-container::after {
+    content: '\f35d';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 24px;
+    background: rgba(255,80,17,0.9);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 0 20px rgba(255,80,17,0.5);
+}
+
+.banner-container:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+
+
 
             /* AI Agent UI Styles */
     #ai-popup-container {
@@ -812,8 +887,22 @@
                         </div>
                     </div>
                 </div>
+
+                
+<!-- Project Freedom Banner with Tracking -->
+<div class="banner-container" onclick="window.open('https://projectfreedom.club/?ref=lifeos', '_blank')">
+    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/0051097e41e800becf39e2033ca4de4859b6d50c.png" 
+         alt="Join Project Freedom Club" 
+         class="banner-image"
+         loading="lazy">
+    <div class="banner-overlay"></div>
+</div>             
             </section>
 
+
+
+
+            
             <section id="iframe-container" class="view-section" style="height: 100%; position: relative;">
                 <!-- Added missing iframe loader needed by JS -->
                 <div id="iframe-loader" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:var(--primary); font-family:var(--font-tech);">
