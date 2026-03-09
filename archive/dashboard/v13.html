@@ -1082,52 +1082,55 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 
 
-
-
-    <div class="loader-screen" id="loader">
-        <div class="loader-container">
-            <div class="hack-terminal">
-                <div class="terminal-header">
-                    <div class="terminal-dots">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                    </div>
-                    <div class="terminal-title">SENTINEL INITIALIZATION</div>
+<div class="loader-screen" id="loader">
+    <div class="loader-container">
+        <div class="hack-terminal">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
                 </div>
-                <div class="terminal-body">
-                    <div class="terminal-line">
-                        <span class="prompt">root@sentinel:~$</span>
-                        <span class="command">./load_playbook.sh</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output">[INFO] Initializing Privacy Dashboard...</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output">[INFO] Loading 9 Core Modules: <span class="success">SUCCESS</span></span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output">[INFO] Interactive Tools: <span class="success">ONLINE</span></span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output">[INFO] Establishing Secure Connection...</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output success">[SUCCESS] Environment Ready.</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="prompt">root@sentinel:~$</span>
-                        <span class="cursor">_</span>
-                    </div>
-                </div>
+                <div class="terminal-title">LIFEOS COMMAND CENTER</div>
             </div>
-            <div class="loader-progress-container">
-                <div class="loader-progress-bar" id="loaderProgress"></div>
-                <div class="loader-percentage" id="loaderPercent">0%</div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">user@lifeos:~$</span>
+                    <span class="command">./initialize_system.sh</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Booting LifeOS Kernel...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Loading Dashboard Modules: <span class="success">SUCCESS</span></span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Syncing Life Score Data...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Connecting to Knowledge Vault...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Initializing AI Agent...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Loading Financial Hub...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output success">[SUCCESS] System Ready.</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">user@lifeos:~$</span>
+                    <span class="cursor">_</span>
+                </div>
             </div>
         </div>
+        <div class="loader-progress-container">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+            <div class="loader-percentage" id="loaderPercent">0%</div>
+        </div>
     </div>
-
+</div>
 
 
 
