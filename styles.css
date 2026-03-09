@@ -258,6 +258,32 @@ body {
     overflow: hidden;
 }
 
+
+
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover { 
+            background: var(--bg-hover); 
+            border-color: rgba(255,80,17,0.3);
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+
+
+
+
+
+
 .card h3 {
     margin-top: 0;
     font-size: 16px;
