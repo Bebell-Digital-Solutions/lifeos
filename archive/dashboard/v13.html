@@ -995,63 +995,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     font-weight: 600;
 }
 
-.hack-lines {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.hack-line {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    background: var(--primary, #ff5011);
-    opacity: 0.1;
-    animation: scanLine 2s linear infinite;
-}
-
-.hack-line:nth-child(1) {
-    left: 20%;
-    animation-delay: 0s;
-}
-
-.hack-line:nth-child(2) {
-    left: 50%;
-    animation-delay: 0.7s;
-}
-
-.hack-line:nth-child(3) {
-    left: 80%;
-    animation-delay: 1.4s;
-}
-
-@keyframes scanLine {
-    0% {
-        top: -100%;
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.3;
-    }
-    100% {
-        top: 100%;
-        opacity: 0;
-    }
-}
-
-
-
-
-
-
-
-
-
-        
+      
         
     </style>
 </head>
@@ -1104,11 +1048,6 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
             <div class="loader-progress-container">
                 <div class="loader-progress-bar" id="loaderProgress"></div>
                 <div class="loader-percentage" id="loaderPercent">0%</div>
-            </div>
-            <div class="hack-lines">
-                <div class="hack-line"></div>
-                <div class="hack-line"></div>
-                <div class="hack-line"></div>
             </div>
         </div>
     </div>
@@ -1820,32 +1759,31 @@ function initLoader() {
     let progress = 0;
     const terminalLines = loader.querySelectorAll('.terminal-line');
     
+    // Show terminal lines one by one
     terminalLines.forEach((line, index) => {
         setTimeout(() => {
             line.style.opacity = '1';
         }, index * 200);
     });
     
+    // Target total duration of 3 seconds (3000ms)
+    const totalDuration = 3000; // 3 seconds
+    const intervalTime = 50; // Update every 50ms for smooth animation
+    const steps = totalDuration / intervalTime;
+    const incrementPerStep = 100 / steps;
+    
     const interval = setInterval(() => {
-        progress += Math.random() * 15 + 5;
+        progress += incrementPerStep;
+        
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
             
+            // Add a small delay before hiding
             setTimeout(() => {
-                if (typeof anime !== 'undefined') {
-                    anime({
-                        targets: loader,
-                        opacity: [1, 0],
-                        duration: 500,
-                        easing: 'easeInOutQuad',
-                        complete: () => {
-                            loader.classList.add('hidden');
-                            initPageAnimations();
-                        }
-                    });
-                } else {
-                    loader.classList.add('hidden');
+                loader.classList.add('hidden');
+                // Initialize any page animations if needed
+                if (typeof initPageAnimations === 'function') {
                     initPageAnimations();
                 }
             }, 500);
@@ -1855,8 +1793,13 @@ function initLoader() {
         if (loaderPercent) {
             loaderPercent.textContent = Math.floor(progress) + '%';
         }
-    }, 80);
+    }, intervalTime);
 }
+
+// Call the loader when the page loads
+document.addEventListener('DOMContentLoaded', initLoader);
+
+      
 </script>
 
 
