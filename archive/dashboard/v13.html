@@ -292,7 +292,7 @@
         .dashboard-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
 
         .card { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: var(--transition); position: relative; overflow: hidden; }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: var(--transition); }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: var(--transition);     pointer-events: none; /* THIS FIXES THE ISSUE */}
         .card:hover { background: var(--bg-hover); border-color: rgba(255,80,17,0.3); }
         .card:hover::before { opacity: 1; }
 
@@ -496,6 +496,7 @@
     opacity: 0;
     transition: var(--transition);
     z-index: 2;
+    pointer-events: none; /* THIS FIXES THE ISSUE */    
 }
 
 .banner-container:hover {
