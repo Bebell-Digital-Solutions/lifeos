@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500&family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,7 +43,27 @@
             --sidebar-width: 280px;
             --sidebar-collapsed-width: 80px;
             --sidebar-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    /* Your existing root variables here */
+    
+    /* --- LOADER-SPECIFIC VARIABLES (Add these to your root) --- */
+    --loader-primary: var(--primary, #ff5011);
+    --loader-glow: 0 10px 40px rgba(255, 80, 17, 0.3);
+    --loader-glow-strong: 0 0 60px rgba(255, 122, 51, 0.2);
+    --loader-glow-inset: inset 0 0 30px rgba(255, 80, 17, 0.1);
+    --loader-bg-start: rgba(255, 80, 17, 0.05);
+    --loader-bg-end: rgba(255, 122, 51, 0.05);
+    --loader-gradient-1: linear-gradient(135deg, var(--loader-bg-start) 0%, var(--loader-bg-end) 100%);
+    --loader-gradient-2: linear-gradient(135deg, rgba(255, 80, 17, 0.1) 0%, rgba(255, 122, 51, 0.1) 100%);
+    --loader-progress-bg: rgba(255, 80, 17, 0.1);
+    --loader-progress-border: rgba(255, 80, 17, 0.3);
+    --loader-scan-color: var(--primary, #ff5011);
+    --loader-radial-1: radial-gradient(circle at 20% 50%, rgba(255, 80, 17, 0.1) 0%, transparent 50%);
+    --loader-radial-2: radial-gradient(circle at 80% 50%, rgba(255, 122, 51, 0.1) 0%, transparent 50%);
+    --loader-line-opacity: 0.1;
+}
+
+
+        
 
         * { box-sizing: border-box; }
 
@@ -737,13 +759,14 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 
 
+/* --- LOADER SCREEN STYLES --- */
 .loader-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center, rgba(255, 80, 17, 0.05) 0%, var(--bg-darker) 70%);
+    background: radial-gradient(ellipse at center, rgba(255, 80, 17, 0.05) 0%, var(--bg-darker, #050505) 70%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -784,7 +807,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 .hack-terminal {
     background: linear-gradient(135deg, rgba(255, 80, 17, 0.05) 0%, rgba(255, 122, 51, 0.05) 100%);
-    border: 2px solid var(--primary);
+    border: 2px solid var(--primary, #ff5011);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(255, 80, 17, 0.3), 0 0 60px rgba(255, 122, 51, 0.2), inset 0 0 30px rgba(255, 80, 17, 0.1);
@@ -800,7 +823,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: var(--gradient-1);
+    background: linear-gradient(135deg, var(--primary, #ff5011) 0%, #ff7a33 100%);
     border-radius: 16px;
     z-index: -1;
     opacity: 0.5;
@@ -818,7 +841,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     display: flex;
     align-items: center;
     gap: 1rem;
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 2px solid var(--primary, #ff5011);
     position: relative;
 }
 
@@ -829,7 +852,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     left: 0;
     width: 100%;
     height: 2px;
-    background: var(--gradient-1);
+    background: linear-gradient(135deg, var(--primary, #ff5011) 0%, #ff7a33 100%);
     opacity: 0.5;
 }
 
@@ -844,13 +867,13 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     border-radius: 50%;
 }
 
-.dot.red { background: var(--danger); }
-.dot.yellow { background: var(--warning); }
-.dot.green { background: var(--success); }
+.dot.red { background: var(--danger, #ef4444); }
+.dot.yellow { background: var(--warning, #ffd43b); }
+.dot.green { background: var(--success, #51cf66); }
 
 .terminal-title {
-    color: var(--text-primary);
-    font-family: var(--font-code);
+    color: var(--text-main, #f5f5f5);
+    font-family: var(--font-code, 'Fira Code', monospace);
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 1px;
@@ -858,7 +881,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 .terminal-body {
     padding: 2rem 1.5rem;
-    font-family: var(--font-code);
+    font-family: var(--font-code, 'Fira Code', monospace);
     font-size: 0.95rem;
     line-height: 1.9;
     min-height: 300px;
@@ -898,26 +921,26 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 }
 
 .prompt {
-    color: var(--primary);
+    color: var(--primary, #ff5011);
     margin-right: 0.5rem;
 }
 
 .command {
-    color: var(--text-primary);
+    color: var(--text-main, #f5f5f5);
 }
 
 .output {
-    color: var(--text-secondary);
+    color: var(--text-muted, #a0a0a0);
     display: block;
     margin-left: 1.5rem;
 }
 
 .output .success {
-    color: var(--success);
+    color: var(--success, #51cf66);
 }
 
 .cursor {
-    color: var(--primary);
+    color: var(--primary, #ff5011);
     animation: blink 1s infinite;
 }
 
@@ -940,9 +963,9 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 .loader-progress-bar {
     height: 100%;
-    background: var(--gradient-1);
+    background: linear-gradient(135deg, var(--primary, #ff5011) 0%, #ff7a33 100%);
     width: 0%;
-    box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
+    box-shadow: 0 0 20px var(--primary, #ff5011), 0 0 40px var(--primary, #ff5011);
     transition: width 0.3s ease;
     position: relative;
     border-radius: 10px;
@@ -966,8 +989,8 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 .loader-percentage {
     text-align: center;
-    color: var(--primary);
-    font-family: var(--font-code);
+    color: var(--primary, #ff5011);
+    font-family: var(--font-code, 'Fira Code', monospace);
     font-size: 1rem;
     font-weight: 600;
 }
@@ -986,7 +1009,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     position: absolute;
     width: 2px;
     height: 100%;
-    background: var(--primary);
+    background: var(--primary, #ff5011);
     opacity: 0.1;
     animation: scanLine 2s linear infinite;
 }
@@ -1019,7 +1042,6 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
         opacity: 0;
     }
 }
-
 
 
 
