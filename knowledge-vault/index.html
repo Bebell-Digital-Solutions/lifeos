@@ -56,5 +56,47 @@
     
 
     <script src="script.js"></script>
+
+
+
+
+<script>
+
+/**
+ * LIFE OS - IFRAME SYNC SCRIPT
+ * Add this script to the bottom of the <body> in all your child pages 
+ * (e.g., productivity.html, community.html, vault.html)
+ */
+
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Grab the visible text content of the page
+    // We clean it up slightly to remove excessive spacing
+    const pageContent = document.body.innerText.replace(/\s+/g, ' ').trim();
+
+    // 2. Identify the page details
+    const pageData = {
+        type: 'REGISTER_SEARCH_INDEX',
+        url: window.location.href, // You can also hardcode relative URLs like 'productivity.html'
+        title: document.title || 'Untitled Module',
+        content: pageContent,
+        pageType: 'System Module' // Feel free to customize this (e.g., 'Tool', 'Guide')
+    };
+
+    // 3. Transmit the data up to the Main Command Center
+    // Note: If you know the exact domain of your dashboard, replace '*' with your domain for better security.
+    if (window.parent !== window) {
+        window.parent.postMessage(pageData, '*');
+        console.log("[Module] Synced content with Command Center.");
+    }
+});
+
+    
+</script>
+
+
+
+
+
+    
 </body>
 </html>
