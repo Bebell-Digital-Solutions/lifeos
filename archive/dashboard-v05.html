@@ -80,7 +80,7 @@
             display: flex;
             flex-direction: column;  
             z-index: 10;
-            transition: width var(--sidebar-transition), padding var(--sidebar-transition);
+transition: padding var(--sidebar-transition);
         }
 
         .sidebar-brand {
@@ -88,6 +88,7 @@
             margin-bottom: 38px;
             padding-bottom: 30px;
             border-bottom: 1px solid var(--border);
+            white-space: nowrap;
         }
 
         .brand-logo {
@@ -246,15 +247,17 @@
         }
 
         /* Hiding text elements with a slide-out effect */
-        .container.collapsed .sidebar-brand h2, 
-        .container.collapsed .sidebar-brand .version-tag,
-        .container.collapsed .nav-btn span,
-        .container.collapsed .version-tag span {
-            opacity: 0;
-            pointer-events: none;
-            position: absolute;
-            transform: translateX(-20px);
-        }
+/* Hiding text elements with a slide-out effect */
+.container.collapsed .sidebar-brand h2, 
+.container.collapsed .sidebar-brand .version-tag,
+.container.collapsed .sidebar button span, /* Updated to match your HTML structure */
+.container.collapsed .version-tag span {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-10px);
+    transition: all 0.2s ease; /* Faster fade out so it disappears before the sidebar crushes it */
+    display: inline-block; /* Allows transform without absolute positioning */
+}
 
         /* Keeping footer icon visible */
         .container.collapsed .version-tag i {
