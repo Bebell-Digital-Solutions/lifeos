@@ -1,1 +1,1964 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS | Command Center</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500&family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for Life Score -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://bucket.mlcdn.com/a/3336/3336910/images/3aac51d0cdcb8174325d8630e8f3b4a1fea39c7b.png">
+
+    <style>
+        :root {
+            --primary: #ff5011;
+            --secondary: #333333;
+            --bg-dark: #000000;
+            --bg-darker: #050505;
+            --bg-card: #121212;
+            --bg-hover: #1a1a1a;
+            --text-main: #f5f5f5;
+            --text-muted: #a0a0a0;
+            --border: rgba(255,255,255,0.1);
+            --success: #51cf66;
+            --warning: #ffd43b;
+            --danger: #ef4444;
+            --shadow-glow: 0 0 30px rgba(255,80,17,0.15);
+            --transition: 0.3s;
+            --font-primary: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --font-tech: 'Orbitron', monospace;
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --sidebar-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Your existing root variables here */
+    
+    /* --- LOADER-SPECIFIC VARIABLES (Add these to your root) --- */
+    --loader-primary: var(--primary, #ff5011);
+    --loader-glow: 0 10px 40px rgba(255, 80, 17, 0.3);
+    --loader-glow-strong: 0 0 60px rgba(255, 122, 51, 0.2);
+    --loader-glow-inset: inset 0 0 30px rgba(255, 80, 17, 0.1);
+    --loader-bg-start: rgba(255, 80, 17, 0.05);
+    --loader-bg-end: rgba(255, 122, 51, 0.05);
+    --loader-gradient-1: linear-gradient(135deg, var(--loader-bg-start) 0%, var(--loader-bg-end) 100%);
+    --loader-gradient-2: linear-gradient(135deg, rgba(255, 80, 17, 0.1) 0%, rgba(255, 122, 51, 0.1) 100%);
+    --loader-progress-bg: rgba(255, 80, 17, 0.1);
+    --loader-progress-border: rgba(255, 80, 17, 0.3);
+    --loader-scan-color: var(--primary, #ff5011);
+    --loader-radial-1: radial-gradient(circle at 20% 50%, rgba(255, 80, 17, 0.1) 0%, transparent 50%);
+    --loader-radial-2: radial-gradient(circle at 80% 50%, rgba(255, 122, 51, 0.1) 0%, transparent 50%);
+    --loader-line-opacity: 0.1;
+}
+
+
+        
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-primary);
+            overflow: hidden; 
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #333; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* The Grid Layout */
+        .container {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            height: 100vh;
+            transition: grid-template-columns var(--sidebar-transition);
+        }
+
+        /* The Collapsed State */
+        .container.collapsed {
+            grid-template-columns: var(--sidebar-collapsed-width) 1fr;
+        }
+
+        .sidebar {
+            background: var(--bg-darker);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;  
+            z-index: 10;
+            transition: padding var(--sidebar-transition);
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            margin-bottom: 38px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        /* NEW LOGO STYLING */
+        .brand-logo {
+            width: 85px; /* Sized perfectly for the sidebar */
+            height: auto;
+            display: block; /* Forces logo onto its own line */
+            margin: 0 auto 15px auto; /* Centers the logo horizontally */
+            filter: drop-shadow(0 0 5px rgba(255, 80, 17, 0.3));
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .brand-logo:hover {
+            filter: drop-shadow(0 0 15px var(--primary)) brightness(1.2) blur(0.2px);
+            transform: scale(1.1) translateY(-5px);
+        }
+
+        .sidebar-brand h2 {
+            font-family: var(--font-tech);
+            font-size: 24px;
+            margin: 0;
+            color: var(--text-main);
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            text-align: left;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .sidebar button i { 
+            width: 25px; 
+            margin-right: 12px; 
+            font-size: 16px; 
+            transition: margin var(--transition);
+            text-align: center;
+        }
+
+        .sidebar button:hover {
+            background: var(--bg-hover);
+            color: var(--text-main);
+            border-color: var(--border);
+        }
+
+        .sidebar button.active-btn {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .version-tag {
+            font-family: var(--font-tech);
+            color: var(--text-muted);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .version-tag:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(255, 80, 17, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .sidebar-toggle-container {
+            width: 100%;
+            height: 44px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .container.collapsed .sidebar-toggle-container {
+            justify-content: center;
+        }
+
+        .toggle-handle {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-handle:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Centering elements when collapsed */
+        .container.collapsed .sidebar {
+            padding: 20px 10px;
+            align-items: center;
+        }
+
+        /* Shrink Logo Image when collapsed */
+        .container.collapsed .brand-logo {
+            width: 42px;
+            margin-bottom: 0px;
+        }
+
+        .container.collapsed .sidebar button {
+            justify-content: center;
+            padding: 12px 0;
+            width: 44px;
+            margin-bottom: 15px;
+        }
+
+        .container.collapsed .sidebar button i {
+            margin: 0;
+            font-size: 18px;
+            width: auto;
+        }
+
+        /* Hiding text elements with a slide-out effect */
+        .container.collapsed .sidebar-brand h2, 
+        .container.collapsed .sidebar button span,
+        .container.collapsed .hide-text {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-10px);
+            transition: all 0.2s ease;
+            display: none; /* This completely removes the invisible text so icons center perfectly */
+        }
+        
+        /* Ensuring version tag fits well when collapsed */
+        .container.collapsed .sidebar-brand .version-tag {
+            font-size: 10px;
+            margin-top: 5px;
+            justify-content: center;
+        }
+
+        /* Keeping footer icon visible */
+        .container.collapsed .version-tag i {
+            font-size: 16px;
+            display: block;
+        }
+
+        .main { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        .main-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; border-bottom: 1px solid var(--border); background: var(--bg-dark); z-index: 5;
+        }
+
+        .header-search {
+            display: flex; align-items: center; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 8px; padding: 8px 15px; width: 300px;
+        }
+
+        .header-search input { background: none; border: none; color: var(--text-main); width: 100%; outline: none; margin-left: 10px; }
+
+        .live-badge {
+            color: var(--success); font-size: 12px; font-family: var(--font-tech);
+            display: inline-flex; align-items: center; gap: 8px; background: var(--bg-card);
+            padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border);
+        }
+
+
+        .live-badge:hover {
+            max-width: 250px;
+            padding: 8px 25px;
+            background: var(--bg-hover);
+            border-color: var(--success);
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 15px rgba(81, 207, 102, 0.2);
+            transform: scale(1.05);
+        }
+
+        .live-badge i { animation: pulse 2s infinite; }
+
+
+        
+
+        .content-area { flex-grow: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
+
+        .view-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .view-section.active { display: block; }
+
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .dashboard-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+        .card { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: var(--transition); position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: var(--transition);     pointer-events: none; /* THIS FIXES THE ISSUE */}
+        .card:hover { background: var(--bg-hover); border-color: rgba(255,80,17,0.3); }
+        .card:hover::before { opacity: 1; }
+
+        .card h3 { margin-top: 0; font-size: 16px; font-family: var(--font-tech); color: var(--text-main); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+
+        .metric { font-size: 36px; color: var(--primary); font-family: var(--font-code); font-weight: 600; }
+        .metric-small { font-size: 20px; margin-top: 5px; color: var(--text-main); font-family: var(--font-code); }
+
+        .page-title { margin-top: 0; font-size: 28px; letter-spacing: 1px; font-family: var(--font-tech); color: var(--text-main); margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+
+        @keyframes terminalBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .terminal-blink { animation: terminalBlink 1.4s ease-in-out infinite; color: var(--primary); }
+
+        h1 i, h2 i, h3 i, h4 i, h5 i, h6 i { color: var(--primary); }
+
+        .routine-item { display: flex; align-items: center; gap: 15px; padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+        .routine-item:last-child { border-bottom: none; }
+        .r-check { width: 22px; height: 22px; border: 2px solid var(--primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .routine-item.done .r-check { background: var(--primary); }
+        .routine-item.done .r-check::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #fff; font-size: 12px; }
+        .routine-item.done .r-text { text-decoration: line-through; color: var(--text-muted); }
+        .r-text { color: var(--text-muted); transition: var(--transition); font-size: 15px; }
+
+        .goal-bar { width: 100%; height: 6px; background: #222; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .goal-fill { height: 100%; background: var(--primary); border-radius: 3px; box-shadow: 0 0 10px var(--primary); }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 12px 0; }
+        .flex-between:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .learning-card { background: #181818; border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; transition: var(--transition); cursor: pointer; }
+        .learning-card:hover { border-color: var(--primary); transform: translateX(5px); }
+        .learning-icon { width: 40px; height: 40px; background: rgba(255,80,17,0.1); color: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .learning-content h4 { margin: 0 0 5px 0; font-size: 15px; font-weight: 500; }
+        .learning-content p { margin: 0; font-size: 12px; color: var(--text-muted); }
+        .learning-meta { margin-left: auto; text-align: right; font-size: 12px; color: var(--primary); font-family: var(--font-code); }
+
+    /* Floating menu button for mobile */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(255,80,17,0.4);
+        }
+
+        /* Animated Menu Icons */
+        .toggle-handle { position: relative; }
+        
+        .toggle-handle i, .mobile-menu-btn i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease;
+        }
+
+        /* Default (Open state) -> Show X */
+        .toggle-handle .icon-burger, 
+        .mobile-menu-btn .icon-burger {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+        }
+        .toggle-handle .icon-close, 
+        .mobile-menu-btn .icon-close {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+
+        /* Collapsed state -> Show Burger */
+        .container.collapsed .toggle-handle .icon-burger,
+        .container.collapsed ~ .mobile-menu-btn .icon-burger {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+        .container.collapsed .toggle-handle .icon-close,
+        .container.collapsed ~ .mobile-menu-btn .icon-close {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+        }      
+        
+        @media(max-width:1024px){
+            .dashboard-2col { grid-template-columns: 1fr; }
+        }
+
+     /* Revised Mobile Sidebar Styles (Replaces old top navigation layout) */
+        @media(max-width:900px){
+            .container {
+                display: block; /* Overrides desktop grid for overlay support */
+            }
+            .sidebar {
+                position: fixed;
+                top: 0; left: 0; bottom: 0;
+                width: var(--sidebar-width);
+                z-index: 105; /* Above everything */
+                box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+                transform: translateX(0);
+            }
+            .container.collapsed .sidebar {
+                width: var(--sidebar-width);
+                transform: translateX(-100%); /* Slide out completely */
+                box-shadow: none; /* remove shadow when collapsed */
+                padding: 20px; /* restore normal padding */
+                align-items: stretch; /* restore normal alignment */
+            }
+            
+            /* Keep inner contents visible during mobile slide animation */
+            .container.collapsed .sidebar-brand h2, 
+            .container.collapsed .sidebar-brand .version-tag,
+            .container.collapsed .nav-btn span,
+            .container.collapsed .version-tag span {
+                opacity: 1;
+                pointer-events: auto;
+                position: static;
+                transform: translateX(0);
+            }
+            
+            .container.collapsed .sidebar button {
+                padding: 12px 15px;
+                justify-content: flex-start;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .container.collapsed .sidebar button i {
+                margin-right: 12px;
+                font-size: 16px;
+            }
+            
+            .main {
+                margin-left: 0;
+                width: 100vw;
+                flex-grow: 1;
+            }
+            .main-header { padding: 20px; }
+            .content-area { padding: 20px; }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+        }
+
+        /* Tiny Screen Adjustments */
+        @media(max-width:600px){
+            .main-header {
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 15px;
+            }
+            .header-search {
+                width: 100%;
+                order: 2;
+            }
+            .live-badge {
+                margin-left: auto;
+                order: 1;
+            }
+        } 
+
+
+
+
+
+        
+/* Banner Styles - Matching Card Hover Effect */
+.banner-container {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    background: var(--bg-card);
+}
+
+.banner-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 2;
+    pointer-events: none; /* THIS FIXES THE ISSUE */    
+}
+
+.banner-container:hover {
+    background: var(--bg-hover);
+    border-color: rgba(255,80,17,0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.banner-container:hover::before {
+    opacity: 1;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.banner-container:hover .banner-image {
+    transform: scale(1.02);
+}
+
+
+        
+
+        
+
+
+
+
+            /* AI Agent UI Styles */
+    #ai-popup-container {
+        position: fixed; 
+        bottom: 100px; 
+        right: 30px; 
+        width: 400px; 
+        height: 620px;
+        background: var(--bg-card, #121212); 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden; 
+        z-index: 1000;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        transform-origin: bottom right; 
+        opacity: 0; 
+        transform: scale(0.1) translateY(100px); 
+        pointer-events: none;
+    }
+    
+    #ai-popup-container.active { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+        pointer-events: auto; 
+    }
+    
+    .ai-popup-header { 
+        background: var(--bg-card, #121212); 
+        padding: 15px 20px; 
+        border-bottom: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        font-family: var(--font-tech, 'Orbitron', monospace); 
+        color: var(--primary, #ff5011); 
+        font-size: 14px; 
+    }
+    
+    .ai-header-controls { 
+        display: flex; 
+        gap: 15px; 
+        align-items: center; 
+    }
+    
+    .ai-header-controls button { 
+        background: none; 
+        border: none; 
+        color: var(--text-muted, #a0a0a0); 
+        cursor: pointer; 
+        font-size: 16px; 
+        transition: 0.2s; 
+    }
+    
+    .ai-header-controls button:hover { 
+        color: var(--primary, #ff5011); 
+    }
+    
+    #ai-chat-body { 
+        flex-grow: 1; 
+        padding: 20px; 
+        overflow-y: auto; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 15px; 
+        background: var(--bg-dark, #000000); 
+    }
+    
+    .ai-msg { 
+        max-width: 85%; 
+        padding: 10px 14px; 
+        border-radius: 12px; 
+        font-size: 13px; 
+        line-height: 1.5; 
+        color: var(--text-main, #f5f5f5);
+    }
+    
+    .ai-msg-bot { 
+        align-self: flex-start; 
+        background: var(--bg-hover, #1a1a1a); 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        border-bottom-left-radius: 2px; 
+    }
+    
+    .ai-msg-user { 
+        align-self: flex-end; 
+        background: var(--primary, #ff5011); 
+        color: #fff; 
+        border-bottom-right-radius: 2px; 
+    }
+    
+    .ai-options-container { 
+        display: flex; 
+        gap: 8px; 
+        padding: 10px 15px; 
+        background: var(--bg-dark, #000000); 
+        border-top: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        overflow-x: auto; 
+    }
+    
+    /* Hide scrollbar for options container */
+    .ai-options-container::-webkit-scrollbar { display: none; }
+    .ai-options-container { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .ai-option-btn { 
+        background: var(--bg-hover, #1a1a1a); 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        color: var(--text-main, #f5f5f5); 
+        padding: 6px 12px; 
+        border-radius: 20px; 
+        font-size: 11px; 
+        white-space: nowrap; 
+        cursor: pointer; 
+        transition: 0.2s; 
+    }
+    
+    .ai-option-btn:hover { 
+        border-color: var(--primary, #ff5011); 
+        color: var(--primary, #ff5011); 
+    }
+    
+    .ai-input-area { 
+        padding: 15px; 
+        border-top: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        display: flex; 
+        gap: 10px; 
+        background: var(--bg-darker, #050505); 
+    }
+    
+    .ai-input-area input { 
+        flex-grow: 1; 
+        background: #111; 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        color: #fff; 
+        padding: 10px 15px; 
+        border-radius: 8px; 
+        outline: none; 
+        font-size: 13px; 
+    }
+    
+    .ai-input-area button { 
+        background: var(--primary, #ff5011); 
+        border: none; 
+        color: #fff; 
+        width: 40px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        transition: 0.2s;
+    }
+    
+    .ai-input-area button:hover {
+        filter: brightness(1.2);
+    }
+    
+    .ai-assistant-btn { 
+        position: fixed; 
+        bottom: 30px; 
+        right: 30px; 
+        width: 60px; 
+        height: 60px; 
+        background: var(--primary, #ff5011); 
+        border-radius: 50%; 
+        border: none;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        color: #fff; 
+        font-size: 24px; 
+        box-shadow: 0 0 20px rgba(255,80,17,0.4); 
+        cursor: pointer; 
+        z-index: 100; 
+        transition: 0.3s; 
+    }
+    
+    .ai-assistant-btn:hover { 
+        transform: scale(1.1); 
+        box-shadow: 0 0 30px rgba(255,80,17,0.6); 
+    }
+
+    .loading-dots:after { 
+        content: ' .'; 
+        animation: dots 1.5s steps(5, end) infinite; 
+    }
+    
+    @keyframes dots { 
+        0%, 20% { content: ' .'; } 
+        40% { content: ' ..'; } 
+        60% { content: ' ...'; } 
+        80%, 100% { content: ''; } 
+    }
+
+
+
+
+
+
+
+
+/* Fix for interaction cursors */
+a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, .btn {
+    cursor: pointer;
+}
+
+
+
+/* --- LOADER SCREEN STYLES --- */
+.loader-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(255, 80, 17, 0.05) 0%, var(--bg-darker, #050505) 70%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+    overflow: hidden;
+}
+
+.loader-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 80, 17, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(255, 122, 51, 0.1) 0%, transparent 50%);
+    animation: loaderPulse 4s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.loader-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.hack-terminal {
+    background: linear-gradient(135deg, rgba(255, 80, 17, 0.05) 0%, rgba(255, 122, 51, 0.05) 100%);
+    border: 2px solid var(--primary, #ff5011);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(255, 80, 17, 0.3), 0 0 60px rgba(255, 122, 51, 0.2), inset 0 0 30px rgba(255, 80, 17, 0.1);
+    margin-bottom: 2rem;
+    backdrop-filter: blur(20px);
+    position: relative;
+}
+
+.hack-terminal::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, var(--primary, #ff5011) 0%, #ff7a33 100%);
+    border-radius: 16px;
+    z-index: -1;
+    opacity: 0.5;
+    animation: terminalGlow 3s ease-in-out infinite;
+}
+
+@keyframes terminalGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+.terminal-header {
+    background: linear-gradient(135deg, rgba(255, 80, 17, 0.1) 0%, rgba(255, 122, 51, 0.1) 100%);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 2px solid var(--primary, #ff5011);
+    position: relative;
+}
+
+.terminal-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, var(--primary, #ff5011) 0%, #ff7a33 100%);
+    opacity: 0.5;
+}
+
+.terminal-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot.red { background: var(--danger, #ef4444); }
+.dot.yellow { background: var(--warning, #ffd43b); }
+.dot.green { background: var(--success, #51cf66); }
+
+.terminal-title {
+    color: var(--text-main, #f5f5f5);
+    font-family: var(--font-code, 'Fira Code', monospace);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.terminal-body {
+    padding: 2rem 1.5rem;
+    font-family: var(--font-code, 'Fira Code', monospace);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    min-height: 300px;
+    background: rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.terminal-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 80, 17, 0.03) 2px, rgba(255, 80, 17, 0.03) 4px);
+    pointer-events: none;
+}
+
+.terminal-line {
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeInTerminal 0.5s ease forwards;
+}
+
+.terminal-line:nth-child(1) { animation-delay: 0.2s; }
+.terminal-line:nth-child(2) { animation-delay: 0.4s; }
+.terminal-line:nth-child(3) { animation-delay: 0.6s; }
+.terminal-line:nth-child(4) { animation-delay: 0.8s; }
+.terminal-line:nth-child(5) { animation-delay: 1s; }
+.terminal-line:nth-child(6) { animation-delay: 1.2s; }
+.terminal-line:nth-child(7) { animation-delay: 1.4s; }
+.terminal-line:nth-child(8) { animation-delay: 1.6s; }
+
+@keyframes fadeInTerminal {
+    to { opacity: 1; }
+}
+
+.prompt {
+    color: var(--primary, #ff5011);
+    margin-right: 0.5rem;
+}
+
+.command {
+    color: var(--text-main, #f5f5f5);
+}
+
+.output {
+    color: var(--text-muted, #a0a0a0);
+    display: block;
+    margin-left: 1.5rem;
+}
+
+.output .success {
+    color: var(--success, #51cf66);
+}
+
+.cursor {
+    color: var(--primary, #ff5011);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.loader-progress-container {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 80, 17, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 80, 17, 0.3);
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.loader-progress-bar {
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary, #ff5011) 0%, #ff7a33 100%);
+    width: 0%;
+    box-shadow: 0 0 20px var(--primary, #ff5011), 0 0 40px var(--primary, #ff5011);
+    transition: width 0.3s ease;
+    position: relative;
+    border-radius: 10px;
+}
+
+.loader-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: progressShine 1.5s infinite;
+}
+
+@keyframes progressShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.loader-percentage {
+    text-align: center;
+    color: var(--primary, #ff5011);
+    font-family: var(--font-code, 'Fira Code', monospace);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+      
+
+
+
+
+/* Inner Page Loader Animation with enhanced glow */
+/* Inner Page Loader - No glow, no animation */
+.heartbeat-icon {
+    /* Removed animation and filter effects */
+    display: block;
+    margin: 0 auto 15px auto;
+    width: 60px;
+    height: auto;
+}
+
+/* Clean loader - no background, no card, just the static logo and text */
+#iframe-loader {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary);
+    font-family: var(--font-tech);
+    text-align: center;
+    z-index: 10;
+}
+
+#iframe-loader div {
+    letter-spacing: 3px;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: var(--text-main);
+    /* Optional: keep or remove text shadow */
+    /* text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); */
+}
+
+        
+    </style>
+</head>
+<body>
+
+
+
+
+
+
+<div class="loader-screen" id="loader">
+    <div class="loader-container">
+        <div class="hack-terminal">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="terminal-title">LIFEOS COMMAND CENTER</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">user@lifeos:~$</span>
+                    <span class="command">./initialize_system.sh</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Booting LifeOS Kernel...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Loading Dashboard Modules: <span class="success">SUCCESS</span></span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Syncing Life Score Data...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Connecting to Knowledge Vault...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Initializing AI Agent...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">[INFO] Loading Financial Hub...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output success">[SUCCESS] System Ready.</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">user@lifeos:~$</span>
+                    <span class="cursor">_</span>
+                </div>
+            </div>
+        </div>
+        <div class="loader-progress-container">
+            <div class="loader-progress-bar" id="loaderProgress"></div>
+            <div class="loader-percentage" id="loaderPercent">0%</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<div class="container" id="os-main-container">
+    <div class="sidebar" id="os-sidebar">
+        <div class="sidebar-toggle-container">
+            <div class="toggle-handle" id="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars icon-burger"></i>
+                <i class="fas fa-times icon-close"></i>
+            </div>
+        </div>
+        
+        <div class="sidebar-brand">
+            <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" alt="Logo" class="brand-logo">
+            <h2>LIFE OS</h2>
+<div class="version-tag" id="brand-version"><span class="hide-text">Sys. Version&nbsp;</span>V2.0.4</div>
+        </div>
+
+        <button class="nav-btn active-btn" id="nav-dashboard" data-type="native" data-target="dashboard">
+            <i class="fas fa-satellite-dish"></i> <span>Life OS</span>
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="https://bebell-digital-solutions.github.io/lifeos/knowledge-vault">
+            <i class="fas fa-brain"></i> <span>Knowledge Vault</span>
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="productivity.html">
+            <i class="fas fa-tools"></i> <span>Practical Tools</span>
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="https://www.wikipedia.org">
+            <i class="fas fa-route"></i> <span>Skill Paths</span>
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="community.html">
+            <i class="fas fa-users"></i> <span>Community</span>
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="challenges.html">
+            <i class="fas fa-bolt"></i> <span>Challenges</span>
+        </button>
+        <button class="nav-btn" data-type="iframe" data-url="vault.html">
+            <i class="fas fa-archive"></i> <span>Resource Vault</span>
+        </button>
+
+        <div class="sidebar-footer">
+            <div class="version-tag">
+                <i class="fa-solid fa-code-branch"></i> <span class="hide-text">v2.0.26-BETA</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="main-header">
+            <div class="header-search">
+                <i class="fas fa-search muted"></i>
+                <!-- Added id="global-search-input" -->
+                <input type="text" id="global-search-input" placeholder="Search knowledge, tools, or ask AI...">
+            </div>
+            <div class="live-badge">
+                <i class="fas fa-circle"></i> OS Active
+            </div>
+        </div>
+
+        <div class="content-area">
+            <section id="dashboard" class="view-section active">
+                <h2 class="page-title"><span class="terminal-blink">>_</span> Command Center</h2>
+                
+                <!-- Added search result containers expected by JS -->
+                <div class="card" id="global-search-results" style="display: none; margin-bottom: 20px; border-color: var(--primary);">
+                    <h3><i class="fas fa-search"></i> External Search Results</h3>
+                    <div id="external-results-list"></div>
+                </div>
+                
+                <div class="card" id="no-search-results" style="display: none; margin-bottom: 20px; text-align: center; border: 1px solid var(--danger); padding: 50px 20px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 42px; color: var(--danger); margin-bottom: 20px;"></i>
+                    <h3 style="color: var(--danger); border-bottom: none; font-size: 22px; letter-spacing: 2px; padding-bottom: 0; margin-bottom: 15px;">SYSTEM ERROR: NO MATCHES FOUND</h3>
+                    <p style="font-family: var(--font-code); color: var(--text-muted); font-size: 14px;">The queried protocol does not exist in local databases or external modules.</p>
+                </div>
+
+                <div class="dashboard-2col">
+                    <div class="card" id="card-life-score">
+                        <h3><i class="fas fa-crosshairs"></i> Life Score by Area</h3>
+                        <div style="height: 250px;"><canvas id="lifeScoreChart"></canvas></div>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <span class="metric-small" style="color: var(--primary);">System Average: 63/100</span>
+                        </div>
+                    </div>
+
+                    <div class="card" id="card-daily-routines">
+                        <h3><i class="fas fa-check-double"></i> Daily Operating Protocols</h3>
+                        <div class="routine-item done" onclick="toggleRoutine(this)"><div class="r-check"></div><span class="r-text">Hydration (1L morning) & Supplements</span><span class="muted" style="margin-left:auto;">07:00</span></div>
+                        <div class="routine-item done" onclick="toggleRoutine(this)"><div class="r-check"></div><span class="r-text">Review active goals & schedule</span><span class="muted" style="margin-left:auto;">07:30</span></div>
+                        <div class="routine-item" onclick="toggleRoutine(this)"><div class="r-check"></div><span class="r-text">Physical Training (45 mins)</span><span class="muted" style="margin-left:auto;">18:00</span></div>
+                        <div class="routine-item" onclick="toggleRoutine(this)"><div class="r-check"></div><span class="r-text">Financial protocol (Log expenses)</span><span class="muted" style="margin-left:auto;">20:00</span></div>
+                        <div class="routine-item" onclick="toggleRoutine(this)"><div class="r-check"></div><span class="r-text">Strategic reading (20 pages)</span><span class="muted" style="margin-left:auto;">21:30</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard">
+                    <div class="card" id="card-active-goals">
+                        <h3><i class="fas fa-flag-checkered"></i> Active Goals</h3>
+                        <div style="margin-bottom: 20px;">
+                            <!-- Added searchable-list-item class -->
+                            <div class="flex-between searchable-list-item" style="border:none; padding:0 0 5px 0;"><span>$10k Emergency Fund</span><span class="muted">85%</span></div>
+                            <div class="goal-bar"><div class="goal-fill" style="width: 85%;"></div></div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <!-- Added searchable-list-item class -->
+                            <div class="flex-between searchable-list-item" style="border:none; padding:0 0 5px 0;"><span>Launch Digital Product</span><span class="muted">40%</span></div>
+                            <div class="goal-bar"><div class="goal-fill" style="width: 40%; background: var(--warning); box-shadow: 0 0 10px var(--warning);"></div></div>
+                        </div>
+                        <div>
+                            <!-- Added searchable-list-item class -->
+                            <div class="flex-between searchable-list-item" style="border:none; padding:0 0 5px 0;"><span>Drop Body Fat to 15%</span><span class="muted">60%</span></div>
+                            <div class="goal-bar"><div class="goal-fill" style="width: 60%; background: var(--success); box-shadow: 0 0 10px var(--success);"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="card-financial-hub">
+                        <h3><i class="fas fa-wallet"></i> Financial Hub</h3>
+                        <div class="metric" id="widget-net-worth">$42,550.00</div>
+                        <div class="muted">Total Liquid Net Worth</div>
+                        <div style="margin-top: 25px;">
+                            <div class="flex-between"><span>Monthly Income</span><span style="color: var(--success);">+$6,200.00</span></div>
+                            <div class="flex-between"><span>Fixed Expenses</span><span style="color: var(--danger);">-$2,850.00</span></div>
+                            <div class="flex-between"><span>Investment Allocation</span><span style="color: var(--primary);">-$1,000.00</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="card-progress-engine">
+                        <h3><i class="fas fa-arrow-trend-up"></i> Progress Engine</h3>
+                        <div class="learning-card">
+                            <div class="learning-icon"><i class="fas fa-briefcase"></i></div>
+                            <div class="learning-content"><h4>Offer Creation Playbook</h4><p>Increase Business score</p></div>
+                            <div class="learning-meta">Playbook<br>+10 Pts</div>
+                        </div>
+                        <div class="learning-card">
+                            <div class="learning-icon"><i class="fas fa-calculator"></i></div>
+                            <div class="learning-content"><h4>Tax Optimization Tool</h4><p>Finance optimization required</p></div>
+                            <div class="learning-meta">Tool<br>+5 Pts</div>
+                        </div>
+                        <div class="learning-card">
+                            <div class="learning-icon"><i class="fas fa-dumbbell"></i></div>
+                            <div class="learning-content"><h4>30-Day Health Reset</h4><p>Active challenge available</p></div>
+                            <div class="learning-meta">Mission<br>+15 Pts</div>
+                        </div>
+                    </div>
+                </div>
+
+                
+<!-- Project Freedom Banner with Tracking -->
+<div class="banner-container" onclick="window.open('https://projectfreedom.club/?ref=lifeos', '_blank')">
+    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/0051097e41e800becf39e2033ca4de4859b6d50c.png" 
+         alt="Join Project Freedom Club" 
+         class="banner-image"
+         loading="lazy">
+    <div class="banner-overlay"></div>
+</div>             
+            </section>
+
+
+
+
+            
+<section id="iframe-container" class="view-section" style="height: 100%; position: relative;">
+    <!-- Iframe loader with static logo - no animation, no glow -->
+    <div id="iframe-loader" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:var(--primary); font-family:var(--font-tech); text-align: center;">
+        <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" 
+             alt="LifeOS Logo" 
+             class="heartbeat-icon">
+        <div style="margin-top: 15px; letter-spacing: 2px;">LOADING MODULE...</div>
+    </div>
+    
+    <iframe id="app-frame" style="width:100%; height:100%; border:none; border-radius:12px; background:var(--bg-darker); transition: opacity 0.3s;"></iframe>
+</section>
+
+
+
+          
+
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    
+<!-- Mobile Sidebar Trigger Button -->
+<button class="mobile-menu-btn" onclick="toggleSidebar()" title="Open Menu">
+    <i class="fas fa-bars icon-burger"></i>
+    <i class="fas fa-times icon-close"></i>
+</button>
+
+
+
+
+
+<!-- Gemini AI Assistant -->
+<div id="ai-popup-container">
+    <div class="ai-popup-header">
+        <span style="display: flex; align-items: center; gap: 12px;"><i class="fas fa-robot"></i> SYSTEM AI AGENT</span>
+        <div class="ai-header-controls">
+            <button onclick="resetAIChat()" title="Reset Session"><i class="fas fa-sync-alt"></i></button>
+            <button onclick="toggleAIPopup()" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    <div id="ai-chat-body">
+        <div class="ai-msg ai-msg-bot">System initialized. Dashboard context synced. How shall we optimize your performance today?</div>
+    </div>
+    
+    <div class="ai-options-container">
+        <button class="ai-option-btn" onclick="quickQuery('Daily Strategic Briefing')">Daily Briefing</button>
+        <button class="ai-option-btn" onclick="quickQuery('Analyze my finances')">Financial Analysis</button>
+        <button class="ai-option-btn" onclick="quickQuery('Break down my active goals')">Goal Breakdown</button>
+    </div>
+
+    <div class="ai-input-area">
+        <input type="text" id="ai-chat-input" placeholder="Ask System AI..." onkeypress="if(event.key === 'Enter') sendAIChat()">
+        <button onclick="sendAIChat()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<button class="ai-assistant-btn" onclick="toggleAIPopup()"><i class="fas fa-robot"></i></button>
+
+
+
+
+
+
+
+
+
+    
+
+<script>
+    function toggleSidebar() { 
+        document.getElementById('os-main-container').classList.toggle('collapsed'); 
+    }
+    
+    function toggleRoutine(el) { el.classList.toggle('done'); }
+
+    // Chart logic
+    const ctx = document.getElementById('lifeScoreChart').getContext('2d');
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(255, 80, 17, 0.5)'); gradient.addColorStop(1, 'rgba(255, 80, 17, 0.05)');
+    const chartData = {
+        labels: ['Mindset', 'Finance', 'Health', 'Career', 'Business', 'Life Skills', 'Digital'],
+        datasets: [{ data: [80, 55, 72, 65, 40, 60, 70], backgroundColor: gradient, borderColor: '#ff5011', pointRadius: 4, borderWidth: 2 }]
+    };
+    new Chart(ctx, { type: 'radar', data: chartData, options: { responsive: true, maintainAspectRatio: false, scales: { r: { angleLines: { color: 'rgba(255, 255, 255, 0.1)' }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, pointLabels: { color: '#888', font: { family: 'Orbitron', size: 10 } }, ticks: { display: false } } }, plugins: { legend: { display: false } } } });
+</script>
+
+
+<script>
+// NAVIGATION & IFRAME LOGIC
+(function() {
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const dashboardView = document.getElementById('dashboard');
+    const iframeView = document.getElementById('iframe-container');
+    const appFrame = document.getElementById('app-frame');
+    const iframeLoader = document.getElementById('iframe-loader');
+
+    navBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            navBtns.forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+
+            const type = btn.getAttribute('data-type');
+
+            if (type === 'native') {
+                iframeView.classList.remove('active');
+                dashboardView.classList.add('active');
+            } 
+            else if (type === 'iframe') {
+                const targetUrl = btn.getAttribute('data-url');
+                dashboardView.classList.remove('active');
+                iframeView.classList.add('active');
+                
+                // Only trigger reload if the URL has actually changed
+                if (appFrame.getAttribute('src') !== targetUrl) {
+                    // Show loader
+                    if(iframeLoader) iframeLoader.style.display = 'block';
+                    appFrame.style.opacity = '0';
+                    
+                    // Record start time for minimum 5 second display
+                    const loadStartTime = Date.now();
+                    const minimumDisplayTime = 5000; // 5 seconds
+                    
+                    appFrame.setAttribute('src', targetUrl);
+                    
+                    // Clear any existing timeout
+                    clearTimeout(appFrame.loadTimeout);
+                    
+                    // Set up the load event listener
+                    appFrame.onload = function() {
+                        const loadEndTime = Date.now();
+                        const elapsedTime = loadEndTime - loadStartTime;
+                        const remainingTime = Math.max(0, minimumDisplayTime - elapsedTime);
+                        
+                        // Wait remaining time before hiding loader
+                        setTimeout(() => {
+                            if(iframeLoader) iframeLoader.style.display = 'none';
+                            appFrame.style.opacity = '1';
+                        }, remainingTime);
+                    };
+                    
+                    // Fallback timeout in case iframe doesn't fire load event
+                    appFrame.loadTimeout = setTimeout(() => {
+                        const loadEndTime = Date.now();
+                        const elapsedTime = loadEndTime - loadStartTime;
+                        const remainingTime = Math.max(0, minimumDisplayTime - elapsedTime);
+                        
+                        setTimeout(() => {
+                            if(iframeLoader) iframeLoader.style.display = 'none';
+                            appFrame.style.opacity = '1';
+                        }, remainingTime);
+                    }, 8000); // Fallback after 8 seconds
+                } else {
+                    // Already loaded, just make sure it's visible
+                    if(iframeLoader) iframeLoader.style.display = 'none';
+                    appFrame.style.opacity = '1';
+                }
+            }
+        });
+    });
+})();
+</script>
+
+
+    
+    
+<script>
+// PAGE LOADER SCRIPT - Controls the initial loading screen
+(function() {
+    function initLoader() {
+        const loader = document.getElementById('loader');
+        if (!loader) return;
+        
+        const progressBar = loader.querySelector('.loader-progress-bar');
+        const loaderPercent = loader.querySelector('.loader-percentage');
+        
+        if (!progressBar) return;
+        
+        let progress = 0;
+        const terminalLines = loader.querySelectorAll('.terminal-line');
+        
+        // Show terminal lines one by one
+        terminalLines.forEach((line, index) => {
+            setTimeout(() => {
+                line.style.opacity = '1';
+            }, index * 200);
+        });
+        
+        // Target total duration of 3 seconds (3000ms)
+        const totalDuration = 3000; // 3 seconds
+        const intervalTime = 50; // Update every 50ms for smooth animation
+        const steps = totalDuration / intervalTime;
+        const incrementPerStep = 100 / steps;
+        
+        const interval = setInterval(() => {
+            progress += incrementPerStep;
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Add a small delay before hiding
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    // Initialize any page animations if needed
+                    if (typeof initPageAnimations === 'function') {
+                        initPageAnimations();
+                    }
+                }, 500);
+            }
+            
+            progressBar.style.width = progress + '%';
+            if (loaderPercent) {
+                loaderPercent.textContent = Math.floor(progress) + '%';
+            }
+        }, intervalTime);
+    }
+
+    // Call the loader when the page loads
+    document.addEventListener('DOMContentLoaded', initLoader);
+})();
+</script>
+
+
+
+
+
+
+
+    
+
+
+<script>
+// SWIPE GESTURE LOGIC FOR MOBILE SIDEBAR
+(function() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        const threshold = 50; // Minimum swipe distance
+        const osContainer = document.getElementById('os-main-container');
+        
+        // Only apply swipe actions on mobile screens
+        if (window.innerWidth <= 900) {
+            if (touchEndX - touchStartX > threshold) {
+                // Swipe Right -> Open Sidebar
+                osContainer.classList.remove('collapsed');
+            } else if (touchStartX - touchEndX > threshold) {
+                // Swipe Left -> Close Sidebar
+                osContainer.classList.add('collapsed');
+            }
+        }
+    }
+})();
+</script>
+
+    
+
+<script>
+    /* EXTERNAL LINK INTERCEPTOR */
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const url = link.getAttribute('href');
+        if (!url || url.startsWith('#') || url.startsWith('javascript:')) return;
+
+        try {
+            const urlObj = new URL(url, window.location.origin);
+            // If hostname is different, force new tab
+            if (urlObj.hostname !== window.location.hostname) {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            }
+        } catch (error) {}
+    });
+
+    /* Storage for external iframe content */
+    const searchIndex = {};
+
+    /* OS CENTRAL NERVOUS SYSTEM (Data Extraction & Sync API) */
+    window.addEventListener('message', (event) => {
+        const data = event.data;
+        if (!data || !data.type) return;
+
+        console.log("[Master OS] Signal Received:", data.type);
+
+        switch(data.type) {
+            // Receive and Index content from child iframes
+            case 'REGISTER_SEARCH_INDEX':
+                if (data.url && data.title) {
+                    searchIndex[data.url] = {
+                        title: data.title,
+                        content: data.content ? data.content.toLowerCase() : '',
+                        type: data.pageType || 'External Module'
+                    };
+                    console.log("[Master OS] Indexed page:", data.title);
+                }
+                break;
+
+            // 1. Finance Updates
+            case 'UPDATE_FINANCE':
+                if (data.netWorth) document.getElementById('widget-net-worth').innerText = data.netWorth;
+                if (data.income) document.getElementById('widget-income').innerText = data.income;
+                if (data.expenses) document.getElementById('widget-expenses').innerText = data.expenses;
+                if (data.investments) document.getElementById('widget-investments').innerText = data.investments;
+                break;
+                
+            // 2. Goal Updates
+            case 'UPDATE_GOAL':
+                if (data.id && data.progress) {
+                    const txtObj = document.getElementById(`goal-${data.id}-txt`);
+                    const barObj = document.getElementById(`goal-${data.id}-bar`);
+                    if (txtObj) txtObj.innerText = data.progress;
+                    if (barObj) barObj.style.width = data.progress;
+                }
+                break;
+
+            // 3. Routine Updates
+            case 'UPDATE_ROUTINE':
+                if (data.id) {
+                    const routineEl = document.getElementById(data.id);
+                    if (routineEl) {
+                        data.done ? routineEl.classList.add('done') : routineEl.classList.remove('done');
+                    }
+                }
+                break;
+
+            // 4. Global Search Execution
+            case 'EXECUTE_SEARCH':
+                if (data.query) {
+                    const searchInput = document.getElementById('global-search-input');
+                    if (searchInput) {
+                        searchInput.value = data.query;
+                        // Trigger the input event to run our new search logic
+                        searchInput.dispatchEvent(new Event('input')); 
+                    }
+                }
+                break;
+        }
+    });
+
+    // Helper function to open iframe from external search result
+    function openIframeUrl(url, query = '') {
+        document.getElementById('dashboard').classList.remove('active');
+        document.getElementById('iframe-container').classList.add('active');
+        
+        let targetUrl = url;
+        
+        // If a query exists, append Text Fragment so the browser jumps directly to the word
+        if (query) {
+            const baseUrl = url.split('#')[0];
+            targetUrl = baseUrl + "#:~:text=" + encodeURIComponent(query);
+        }
+        
+        const appFrame = document.getElementById('app-frame');
+        const iframeLoader = document.getElementById('iframe-loader');
+
+        // Fixed: Added same checks and timeout as main navigation
+        if (appFrame.getAttribute('src') !== targetUrl) {
+            if(iframeLoader) iframeLoader.style.display = 'block';
+            appFrame.style.opacity = '0';
+            appFrame.setAttribute('src', targetUrl);
+
+            clearTimeout(appFrame.loadTimeout);
+            appFrame.loadTimeout = setTimeout(() => {
+                if(iframeLoader) iframeLoader.style.display = 'none';
+                appFrame.style.opacity = '1';
+            }, 5000);
+        } else {
+            if(iframeLoader) iframeLoader.style.display = 'none';
+            appFrame.style.opacity = '1';
+        }
+
+        // Clear search automatically upon clicking
+        const searchInput = document.getElementById('global-search-input');
+        if(searchInput){
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input')); 
+        }
+    }
+
+    // -------------------------------------------------------------
+    // LIVE GLOBAL SEARCH ALGORITHM
+    // -------------------------------------------------------------
+    const searchInputEl = document.getElementById('global-search-input');
+    if(searchInputEl){
+        searchInputEl.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            // 1. If user is currently looking at an iframe, switch back to the main dashboard to show results
+            if (query !== '' && !document.getElementById('dashboard').classList.contains('active')) {
+                const navDashboardBtn = document.getElementById('nav-dashboard');
+                if(navDashboardBtn) navDashboardBtn.click();
+            }
+
+            // 2. Search & Filter Sub-items (Routines, Goals, Learning Actions)
+            const subItems = document.querySelectorAll('.routine-item, .searchable-list-item, .learning-card');
+            subItems.forEach(item => {
+                if (query === '' || item.innerText.toLowerCase().includes(query)) {
+                    item.style.display = ''; 
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // 3. Search & Filter Dashboard Cards
+            let localMatchCount = 0;
+            const dashboardCards = document.querySelectorAll('.card');
+            dashboardCards.forEach(card => {
+                // If search is empty, show everything
+                if (query === '') {
+                    card.style.display = ''; 
+                    return;
+                }
+
+                // Exclude the search results card itself from this loop
+                if (card.id === 'global-search-results' || card.id === 'no-search-results') return;
+
+                const title = card.querySelector('h3');
+                const cardTextMatches = card.innerText.toLowerCase().includes(query);
+                const cardContainsSubItems = card.querySelectorAll('.routine-item, .searchable-list-item, .learning-card');
+                
+                // Logic A: The card is a list-based card (e.g. Routines, Goals)
+                if (cardContainsSubItems.length > 0) {
+                    // Check if any sub-items inside this specific card are still visible
+                    const hasVisibleSubItems = Array.from(cardContainsSubItems).some(item => item.style.display !== 'none');
+                    
+                    // If the user literally searched the card's title, show the card AND all sub-items inside it
+                    if (title && title.innerText.toLowerCase().includes(query)) {
+                        card.style.display = '';
+                        cardContainsSubItems.forEach(item => item.style.display = ''); 
+                        localMatchCount++;
+                    } 
+                    // If sub-items match, keep the card visible
+                    else if (hasVisibleSubItems) {
+                        card.style.display = '';
+                        localMatchCount++;
+                    } 
+                    // Hide card if nothing matches
+                    else {
+                        card.style.display = 'none';
+                    }
+                } 
+                // Logic B: The card is a static text/metric card (e.g. Life Score, Financial Hub)
+                else {
+                    if (cardTextMatches) {
+                        card.style.display = '';
+                        localMatchCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+
+            // 4. Search the Indexed Iframe Content
+            const searchResultsCard = document.getElementById('global-search-results');
+            const searchResultsList = document.getElementById('external-results-list');
+            let externalMatches = [];
+
+            if (query === '') {
+                if(searchResultsCard) searchResultsCard.style.display = 'none';
+            } else {
+                for (const [url, pageData] of Object.entries(searchIndex)) {
+                    if (pageData.title.toLowerCase().includes(query) || pageData.content.includes(query)) {
+                        externalMatches.push({ url, ...pageData });
+                    }
+                }
+
+                if (externalMatches.length > 0 && searchResultsCard && searchResultsList) {
+                    // We have external matches, display the new card
+                    searchResultsCard.style.display = 'block';
+                    let html = '';
+                    externalMatches.forEach(match => {
+                        // Escape single quotes for the inline onClick
+                        const safeQuery = query.replace(/'/g, "\\'");
+                        
+                        html += `
+                            <div class="learning-card" onclick="openIframeUrl('${match.url}', '${safeQuery}')" style="margin-top: 10px; border-left: 3px solid var(--primary);">
+                                <div class="learning-icon" style="background: rgba(255, 80, 17, 0.1); color: var(--primary);">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="learning-content">
+                                    <h4 style="margin-bottom: 2px; color: var(--text-main);">${match.title}</h4>
+                                    <p style="color: var(--success); font-family: var(--font-code); font-size: 11px;">
+                                        <i class="fas fa-check-circle" style="margin-right: 4px;"></i>Match found in ${match.type}
+                                    </p>
+                                </div>
+                                <div class="learning-meta" style="color: var(--primary); display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
+                                    <span>Open</span> <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    searchResultsList.innerHTML = html;
+                } else if (searchResultsCard) {
+                    searchResultsCard.style.display = 'none';
+                }
+            }
+            
+            // 5. Handle System Error (No Results State)
+            const noResultsCard = document.getElementById('no-search-results');
+            if(noResultsCard){
+                if (query !== '' && localMatchCount === 0 && externalMatches.length === 0) {
+                    noResultsCard.style.display = 'block';
+                } else {
+                    noResultsCard.style.display = 'none';
+                }
+            }
+        });
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+<!-- AI System Agent JavaScript Logic -->
+<script>
+        // -------------------------------------------------------------
+    // AI SYSTEM AGENT LOGIC
+    // -------------------------------------------------------------
+    const apiKey = ""; 
+
+    async function callGemini(prompt, systemPrompt = "") {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const payload = {
+            contents: [{ parts: [{ text: prompt }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] }
+        };
+
+        for (let i = 0; i < 5; i++) {
+            try {
+                const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "System could not process request.";
+            } catch (e) {
+                if (i === 4) return "Connection timed out. Please verify connectivity.";
+                await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+            }
+        }
+    }
+
+    // Connects to the host OS dashboard to pull data (Ensure these DOM IDs exist in the parent app)
+    function getDashboardContext() {
+        let context = "Context: ";
+        try {
+            const netWorthEl = document.getElementById('widget-net-worth');
+            if (netWorthEl) context += `Net Worth ${netWorthEl.innerText}. `;
+            
+            const goals = Array.from(document.querySelectorAll('#card-active-goals .flex-between')).map(el => el.innerText).join(", ");
+            if (goals) context += `Goals: ${goals}. `;
+            
+            // Depends on chartData existing in the parent window. Safely fallback if missing.
+            if(typeof chartData !== 'undefined') {
+                const scores = chartData.labels.map((l, i) => `${l}: ${chartData.datasets[0].data[i]}`).join(", ");
+                context += `Radar Scores: ${scores}.`;
+            }
+        } catch(e) {
+            console.warn("AI couldn't pull full dashboard context.", e);
+        }
+        return context;
+    }
+
+    function cleanResponse(text) { return text.replace(/[#*]/g, '').trim(); }
+
+    async function sendAIChat() {
+        const input = document.getElementById('ai-chat-input');
+        const query = input.value.trim();
+        if(!query) return;
+
+        const body = document.getElementById('ai-chat-body');
+        body.innerHTML += `<div class="ai-msg ai-msg-user">${query}</div>`;
+        input.value = '';
+        body.scrollTop = body.scrollHeight;
+
+        const loadId = 'ai-' + Date.now();
+        body.innerHTML += `<div class="ai-msg ai-msg-bot" id="${loadId}"><span class="loading-dots">Scanning Nodes</span></div>`;
+        
+        const context = getDashboardContext();
+        const systemPrompt = `You are the Life OS AI. Provide tactical coaching. IMPORTANT: No markdown bolding or headers. Use dashes for bullet points. ${context}`;
+        
+        const response = await callGemini(query, systemPrompt);
+        const cleanTxt = cleanResponse(response);
+        
+        document.getElementById(loadId).innerHTML = cleanTxt.replace(/\n/g, '<br>');
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function quickQuery(text) { 
+        document.getElementById('ai-chat-input').value = text; 
+        sendAIChat(); 
+    }
+    
+    function resetAIChat() { 
+        document.getElementById('ai-chat-body').innerHTML = `<div class="ai-msg ai-msg-bot">System re-initialized. Dashboard context refreshed. How can I help?</div>`; 
+    }
+    
+    function toggleAIPopup() { 
+        document.getElementById('ai-popup-container').classList.toggle('active'); 
+    }
+</script>
+
+
+
+
+  <script>
+    
+function initLoader() {
+    const loader = document.getElementById('loader');
+    const progressBar = loader.querySelector('.loader-progress-bar');
+    const loaderPercent = loader.querySelector('.loader-percentage');
+    
+    if (!loader || !progressBar) return;
+    
+    let progress = 0;
+    const terminalLines = loader.querySelectorAll('.terminal-line');
+
+    // Target total duration of 3 seconds (3000ms)
+    const totalDuration = 3000; // 3 seconds
+    const intervalTime = 50; // Update every 50ms for smooth animation
+    const steps = totalDuration / intervalTime;
+    const incrementPerStep = 100 / steps;
+    
+    const interval = setInterval(() => {
+        progress += incrementPerStep;
+        
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            
+            // Add a small delay before hiding
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                // Initialize any page animations if needed
+                if (typeof initPageAnimations === 'function') {
+                    initPageAnimations();
+                }
+            }, 500);
+        }
+        
+        progressBar.style.width = progress + '%';
+        if (loaderPercent) {
+            loaderPercent.textContent = Math.floor(progress) + '%';
+        }
+    }, intervalTime);
+}
+
+// Call the loader when the page loads
+document.addEventListener('DOMContentLoaded', initLoader);
+
+      
+</script>
+
+
+
+    
+</body>
+</html>
