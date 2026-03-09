@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vault | Self-Development Library</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #ff5011;
+            --secondary: #333333;
+            --bg-dark: #000000;
+            --bg-darker: #050505;
+            --bg-card: #121212;
+            --bg-hover: #1a1a1a;
+            --text-main: #f5f5f5;
+            --text-muted: #a0a0a0;
+            --border: rgba(255,255,255,0.1);
+            --success: #51cf66;
+            --warning: #ffd43b;
+            --danger: #ef4444;
+            --shadow-glow: 0 0 30px rgba(255,80,17,0.15);
+            --transition: 0.3s;
+            --font-primary: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --font-tech: 'Orbitron', sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-primary);
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-darker); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* Typography */
+        h1, h2, h3, h4 { margin: 0; }
+        p { line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        
+        h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
+
+        .page-title {
+            font-size: 28px;
+            letter-spacing: 1px;
+            font-family: var(--font-tech);
+            color: var(--text-main);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- Header & Progress Sticky Wrapper --- */
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Top Tags Filter Bar */
+        .tags-header {
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            overflow-x: auto;
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .tags-header.dragging {
+            cursor: grabbing;
+        }
+
+        .tags-header::-webkit-scrollbar { height: 0px; }
+        .tags-header:hover::-webkit-scrollbar { height: 6px; }
+
+        .brand-logo {
+            font-family: var(--font-tech);
+            font-size: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+        
+        .brand-logo span { color: var(--primary); }
+
+        .tag-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-primary);
+            font-size: 14px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .tag-btn:hover { border-color: var(--primary); color: var(--text-main); }
+
+        .tag-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* --- Global Progress Tracker --- */
+        .progress-container {
+            padding: 30px 40px 15px 40px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-family: var(--font-tech);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .progress-stats strong { color: var(--primary); font-size: 12px; transition: color 0.3s;}
+        .progress-stats strong.success { color: var(--success); }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .progress-bar-fill.success {
+            background: var(--success);
+            box-shadow: 0 0 15px var(--success);
+        }
+
+        /* Main Content Container */
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+
+        /* Sections */
+        .pillar-section { display: none; margin-bottom: 80px; animation: fadeIn 0.4s ease-in-out; }
+        .pillar-section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-family: var(--font-tech);
+            text-transform: uppercase;
+        }
+
+        /* View Toggle Buttons */
+        .view-toggles { display: flex; gap: 10px; }
+
+        .view-btn {
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 36px; height: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+
+        .view-btn:hover { border-color: var(--primary); color: var(--text-main); }
+        .view-btn.active { background: rgba(255,80,17,0.1); border-color: var(--primary); color: var(--primary); }
+
+        /* Dynamic Grid / List Views */
+        .item-container.grid-view { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .item-container.grid-view.tools-grid { grid-template-columns: repeat(4, 1fr); }
+        .item-container.list-view { display: flex; flex-direction: column; gap: 20px; }
+
+        .item-card {
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .item-card:hover {
+            border-color: rgba(255,80,17,0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .list-view .item-card { flex-direction: row; align-items: stretch; height: 180px; }
+
+        /* --- Floating Status Badge --- */
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            box-shadow: 0 0 12px var(--primary);
+            z-index: 10;
+            transition: all 0.4s ease;
+            border: 2px solid var(--bg-darker);
+        }
+        
+        .status-badge.completed {
+            background-color: var(--success);
+            box-shadow: 0 0 12px var(--success);
+        }
+
+        /* Image Banners */
+        .item-banner, .yt-banner {
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-color: var(--bg-darker);
+        }
+
+        .item-banner { aspect-ratio: 4 / 3; }
+        .book-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png'); }
+        .tool-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/166780e59e267092b33c09f1ef62ec4a93d6ebfd.png'); }
+
+        .list-view .item-banner { width: 240px; height: 100%; flex-shrink: 0; }
+
+        /* Sub-sections within a single card */
+        .sub-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .sub-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        /* Item Content */
+        .item-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .item-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; font-family: var(--font-tech); }
+        .item-subtitle { font-size: 13px; color: var(--primary); margin-bottom: 10px; font-family: var(--font-code); }
+        .item-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; flex-grow: 1; }
+        .list-view .item-desc { margin-bottom: 10px; }
+
+        .item-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto;
+        }
+        .item-meta { font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+
+        .cta-btn {
+            background: var(--bg-hover); border: 1px solid var(--primary);
+            color: var(--primary); padding: 8px 16px; border-radius: 4px;
+            font-size: 12px; font-family: var(--font-code); cursor: pointer;
+            transition: var(--transition); text-transform: uppercase;
+            text-align: center; font-weight: 600;
+        }
+        .cta-btn:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px rgba(255,80,17,0.4); }
+        .cta-btn.completed-btn { background: rgba(81, 207, 102, 0.1); border-color: var(--success); color: var(--success); }
+        .cta-btn.completed-btn:hover { background: var(--success); color: #fff; box-shadow: 0 0 15px rgba(81, 207, 102, 0.4); }
+
+        /* --- UPDATED: YouTube Scroller & Mixed Cards --- */
+        .yt-scroller {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 15px;
+            scroll-snap-type: x mandatory;
+        }
+        .yt-scroller::-webkit-scrollbar { height: 8px; }
+        .yt-scroller::-webkit-scrollbar-track { background: var(--bg-darker); border-radius: 4px; }
+        .yt-scroller::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
+        .yt-scroller::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        .yt-card {
+            flex: 0 0 320px;
+            scroll-snap-align: start;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .yt-card:hover { 
+            border-color: rgba(255,80,17,0.5); 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+        }
+        .yt-card iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+            display: block;
+        }
+        .yt-card .yt-banner {
+            aspect-ratio: 16 / 9;
+            background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/637b3258efd5e99bc559d80fdf0b179295ff83f1.png');
+        }
+        .yt-content { 
+            padding: 20px; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .yt-title { 
+            font-size: 16px; 
+            font-family: var(--font-tech); 
+            margin-bottom: 8px; 
+            color: var(--text-main); 
+        }
+        .yt-desc { 
+            font-size: 13px; 
+            color: var(--text-muted); 
+            line-height: 1.5;
+            margin-bottom: 20px; 
+            flex-grow: 1; 
+        }
+
+        /* Back to top button */
+        #backToTop {
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
+            background: var(--bg-card); border: 1px solid var(--primary); color: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; opacity: 0; visibility: hidden;
+            transition: var(--transition); z-index: 1000; box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        #backToTop.visible { opacity: 1; visibility: visible; }
+        #backToTop:hover { background: var(--primary); color: #fff; box-shadow: var(--shadow-glow); transform: translateY(-5px); }
+
+        @media(max-width: 1200px) {
+            .item-container.grid-view.tools-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media(max-width: 1024px) {
+            .item-container.grid-view { grid-template-columns: repeat(2, 1fr); }
+            .item-container.grid-view.tools-grid { grid-template-columns: repeat(2, 1fr); }
+            .tags-header { padding: 15px 20px; }
+            .progress-container { padding: 0 20px 15px 20px; }
+            .main-container { padding: 20px; }
+        }
+        @media(max-width: 768px) {
+            .item-container.grid-view { grid-template-columns: 1fr; }
+            .item-container.grid-view.tools-grid { grid-template-columns: 1fr; }
+            .list-view .item-card { flex-direction: column; height: auto; }
+            .list-view .item-banner { width: 100%; height: auto; aspect-ratio: 4 / 3; }
+            .yt-card { flex: 0 0 280px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sticky-wrapper">
+        <header class="tags-header" id="tagsHeader">
+            <div class="brand-logo">KNOWLEDGE <span>VAULT</span></div>
+            <button class="tag-btn active" data-target="#mindset">Mindset & Psychology</button>
+            <button class="tag-btn" data-target="#finance">Personal Finance</button>
+            <button class="tag-btn" data-target="#health">Health & Wellness</button>
+            <button class="tag-btn" data-target="#career">Career & Skills</button>
+            <button class="tag-btn" data-target="#business">Business & Entrepreneurship</button>
+            <button class="tag-btn" data-target="#lifeskills">Life Skills</button>
+            <button class="tag-btn" data-target="#digital">Digital Independence</button>
+            <button class="tag-btn" data-target="#ai">Artificial Intelligence</button>
+        </header>
+
+        <!-- New Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-stats">
+                <span>Total Vault Mastery</span>
+                <span><strong id="progress-text-ui">0</strong> / <span id="total-text-ui">0</span> Modules Completed</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill-ui"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <!-- Pillar 1: Mindset & Psychology -->
+        <section id="mindset" class="pillar-section active">
+            <h1 class="page-title"><i class="fas fa-brain"></i> Mindset and Psychology</h1>
+            
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('mindset-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('mindset-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="mindset-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Thinking, Fast and Slow</div>
+                                <div class="item-subtitle">Behavioral Economics</div>
+                                <div class="item-desc">A deep dive into the two systems that drive the way we think—System 1 is fast and emotional; System 2 is slower and logical.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Daniel Kahneman</span><span><strong>Published:</strong> 2011</span></div>
+                                    <a href="https://www.amazon.com/Thinking-Fast-Slow-Daniel-Kahneman/dp/0374533555" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Meditations</div>
+                                <div class="item-subtitle">Stoic Philosophy</div>
+                                <div class="item-desc">The personal writings of a Roman Emperor offering profound insights into self-discipline, resilience, and perspective.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Marcus Aurelius</span><span><strong>Published:</strong> ~180 AD</span></div>
+                                    <a href="https://www.amazon.com/Meditations-New-Translation-Marcus-Aurelius/dp/0812968255" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Atomic Habits</div>
+                                <div class="item-subtitle">Behavior Change</div>
+                                <div class="item-desc">An easy and proven way to build good habits, break bad ones, and master the tiny behaviors that lead to remarkable results.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> James Clear</span><span><strong>Published:</strong> 2018</span></div>
+                                    <a href="https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/yBasnNclE38" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">The Four Temperaments</div>
+                                <div class="yt-desc">The Four Temperament Theory is a proto-psychological theory suggesting that there are four fundamental personality types.</div>
+                                <a href="https://youtu.be/yBasnNclE38" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">The School of Life</div>
+                                <div class="yt-desc">A channel applying philosophy, psychology, and literature to everyday life challenges.</div>
+                                <a href="https://www.youtube.com/user/schooloflifechannel" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/PHe0bXAIuk0" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">How The Economic Machine Works</div>
+                                <div class="yt-desc">A deep dive animated video by Ray Dalio explaining the basic concepts of macroeconomic forces and human psychology.</div>
+                                <a href="https://youtu.be/PHe0bXAIuk0" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/PHe0bXAIuk0" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">How The Economic Machine Works</div>
+                                <div class="yt-desc">A deep dive animated video by Ray Dalio explaining the basic concepts of macroeconomic forces and human psychology.</div>
+                                <a href="https://youtu.be/PHe0bXAIuk0" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+
+
+      
+                        
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('mindset-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('mindset-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="mindset-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Stoic Philosophy Summaries</div>
+                                <div class="item-desc">A condensed document of core Stoic tenets for daily reflection.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Cognitive Bias Cheat Sheet</div>
+                                <div class="item-desc">A visual map of the most common logical fallacies and biases.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Decision Making Checklist</div>
+                                <div class="item-desc">A step-by-step framework to remove emotion from critical choices.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 2: Personal Finance -->
+        <section id="finance" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-wallet"></i> Personal Finance</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('finance-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('finance-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="finance-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Psychology of Money</div>
+                                <div class="item-subtitle">Wealth Behavior</div>
+                                <div class="item-desc">Timeless lessons on wealth, greed, and happiness doing well with money is about behavior.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Morgan Housel</span><span><strong>Published:</strong> 2020</span></div>
+                                    <a href="https://www.amazon.com/Psychology-Money-Timeless-lessons-happiness/dp/0857197681" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">A Random Walk Down Wall St.</div>
+                                <div class="item-subtitle">Investing Theory</div>
+                                <div class="item-desc">The definitive guide to index investing and understanding the futility of predicting the market.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Burton Malkiel</span><span><strong>Published:</strong> 1973</span></div>
+                                    <a href="https://www.amazon.com/Random-Walk-Down-Wall-Street/dp/0393358380" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">I Will Teach You to Be Rich</div>
+                                <div class="item-subtitle">Practical Finance</div>
+                                <div class="item-desc">A no-guilt, 6-week program that works. Automate your money and focus on big wins.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Ramit Sethi</span><span><strong>Published:</strong> 2009</span></div>
+                                    <a href="https://www.amazon.com/Will-Teach-You-Be-Rich/dp/1523505745" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">The Plain Bagel</div>
+                                <div class="yt-desc">Financial education without the hype. Clear breakdowns of markets and economic events.</div>
+                                <a href="https://www.youtube.com/c/ThePlainBagel" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/q9Zk-B5XqXw" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">The 5% Rule</div>
+                                <div class="yt-desc">Ben Felix breaks down the mathematics behind renting vs. buying a home to make objective financial choices.</div>
+                                <a href="https://youtu.be/q9Zk-B5XqXw" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Patrick Boyle</div>
+                                <div class="yt-desc">Quantitative fund manager offering dry humor and deep market analysis.</div>
+                                <a href="https://www.youtube.com/c/PatrickBoyleOnFinance" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('finance-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('finance-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="finance-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Personal Net Worth Tracker</div>
+                                <div class="item-desc">Automated spreadsheet to calculate assets vs liabilities monthly.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Budget Template</div>
+                                <div class="item-desc">Zero-based budgeting system for tracking income and expenses.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Investment Allocation Guide</div>
+                                <div class="item-desc">Model portfolios based on age, risk tolerance, and time horizon.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 3: Health & Wellness -->
+        <section id="health" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-heartbeat"></i> Health & Wellness</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('health-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('health-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="health-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">How Not to Die</div>
+                                <div class="item-subtitle">Nutrition Science</div>
+                                <div class="item-desc">Discover the foods scientifically proven to prevent and reverse disease.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Michael Greger</span><span><strong>Published:</strong> 2015</span></div>
+                                    <a href="https://www.amazon.com/How-Not-Die-Discover-Scientifically/dp/1250066115" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Why We Sleep</div>
+                                <div class="item-subtitle">Sleep Science</div>
+                                <div class="item-desc">Unlocking the power of sleep and dreams for longevity and performance.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Matthew Walker</span><span><strong>Published:</strong> 2017</span></div>
+                                    <a href="https://www.amazon.com/Why-We-Sleep-Science-Dreams/dp/1501144324" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Outlive</div>
+                                <div class="item-subtitle">Longevity</div>
+                                <div class="item-desc">The science and art of longevity. Moving from Medicine 2.0 to 3.0.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Peter Attia</span><span><strong>Published:</strong> 2023</span></div>
+                                    <a href="https://www.amazon.com/Outive-Longevity-Peter-Attia/dp/0593236599" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Blue Zones</div>
+                                <div class="item-subtitle">Lifestyle Design</div>
+                                <div class="item-desc">Lessons for living longer from the people who've lived the longest.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Dan Buettner</span><span><strong>Published:</strong> 2008</span></div>
+                                    <a href="https://www.amazon.com/Blue-Zones-Lessons-Living-Longest/dp/1426207557" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Huberman Lab</div>
+                                <div class="yt-desc">Neuroscience: how our brain and its connections control our perceptions.</div>
+                                <a href="https://www.youtube.com/c/AndrewHubermanLab" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/5t1XvNA4aEA" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Sleep is your superpower</div>
+                                <div class="yt-desc">Matt Walker discusses the vital impact of sleep on our brains and bodies in this TED Talk.</div>
+                                <a href="https://youtu.be/5t1XvNA4aEA" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Jeff Nippard</div>
+                                <div class="yt-desc">Science-based training and fitness guidelines for bodybuilding and strength.</div>
+                                <a href="https://www.youtube.com/c/JeffNippard" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('health-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('health-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="health-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Basic Nutrition Guide</div>
+                                <div class="item-desc">A foundational cheat sheet for macros, micros, and healthy eating patterns.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Weekly Workout Structure</div>
+                                <div class="item-desc">A template for balancing resistance training, cardio, and recovery.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Sleep Optimization Checklist</div>
+                                <div class="item-desc">Protocols for light exposure, temperature control, and wind-down routines.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 4: Career & Skills -->
+        <section id="career" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-briefcase"></i> Career & Skills</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('career-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('career-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="career-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Deep Work</div>
+                                <div class="item-subtitle">Productivity</div>
+                                <div class="item-desc">Rules for focused success in a distracted world. Master the art of extreme focus.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Cal Newport</span><span><strong>Published:</strong> 2016</span></div>
+                                    <a href="https://www.amazon.com/Deep-Work-Focused-Success-Distracted/dp/1455586692" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">So Good They Can't Ignore You</div>
+                                <div class="item-subtitle">Career Strategy</div>
+                                <div class="item-desc">Why skills trump passion in the quest for work you love.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Cal Newport</span><span><strong>Published:</strong> 2012</span></div>
+                                    <a href="https://www.amazon.com/Good-They-Cant-Ignore-You/dp/1455509124" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Range</div>
+                                <div class="item-subtitle">Skill Acquisition</div>
+                                <div class="item-desc">Why generalists triumph in a specialized world.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> David Epstein</span><span><strong>Published:</strong> 2019</span></div>
+                                    <a href="https://www.amazon.com/Range-Generalists-Triumph-Specialized-World/dp/0735214484" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Ultralearning</div>
+                                <div class="item-subtitle">Self-Education</div>
+                                <div class="item-desc">Master hard skills, outsmart the competition, and accelerate your career.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Scott Young</span><span><strong>Published:</strong> 2019</span></div>
+                                    <a href="https://www.amazon.com/Ultralearning-Master-Outsmart-Accelerate-Career/dp/006285268X" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/ukLnPbIffxE" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">How To Study for Exams</div>
+                                <div class="yt-desc">Ali Abdaal's evidence-based masterclass on active recall, spaced repetition, and efficient learning techniques.</div>
+                                <a href="https://youtu.be/ukLnPbIffxE" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Thomas Frank</div>
+                                <div class="yt-desc">Actionable tips for Notion, productivity systems, and learning how to learn.</div>
+                                <a href="https://www.youtube.com/user/electrickeye91" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/gTaJhwPtIHc" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Deep Work in a Distracted World</div>
+                                <div class="yt-desc">Cal Newport breaks down the mechanics of intense focus and how to escape the traps of "shallow" work.</div>
+                                <a href="https://youtu.be/gTaJhwPtIHc" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('career-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('career-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="career-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Skill Acquisition Guide</div>
+                                <div class="item-desc">A framework to deconstruct skills and learn them rapidly.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Weekly Deep Work Planner</div>
+                                <div class="item-desc">Time-blocking templates to ensure uninterrupted focus blocks.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Learning System Template</div>
+                                <div class="item-desc">Notion setup for spaced repetition and active recall notes.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 5: Business & Entrepreneurship -->
+        <section id="business" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-building"></i> Business & Entrepreneurship</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('business-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('business-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="business-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Lean Startup</div>
+                                <div class="item-subtitle">Startup Methodology</div>
+                                <div class="item-desc">How today's entrepreneurs use continuous innovation to create radically successful businesses.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Eric Ries</span><span><strong>Published:</strong> 2011</span></div>
+                                    <a href="https://www.amazon.com/Lean-Startup-Entrepreneurs-Continuous-Innovation/dp/0307887898" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Personal MBA</div>
+                                <div class="item-subtitle">Business Basics</div>
+                                <div class="item-desc">Master the art of business without the expensive degree.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Josh Kaufman</span><span><strong>Published:</strong> 2010</span></div>
+                                    <a href="https://www.amazon.com/Personal-MBA-Master-Art-Business/dp/1591845572" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">$100M Offers</div>
+                                <div class="item-subtitle">Sales & Marketing</div>
+                                <div class="item-desc">How to make offers so good people feel stupid saying no.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Alex Hormozi</span><span><strong>Published:</strong> 2021</span></div>
+                                    <a href="https://www.amazon.com/100M-Offers-Alex-Hormozi/dp/B099812BYK" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Zero to One</div>
+                                <div class="item-subtitle">Innovation</div>
+                                <div class="item-desc">Notes on startups, or how to build the future through monopolies.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Peter Thiel</span><span><strong>Published:</strong> 2014</span></div>
+                                    <a href="https://www.amazon.com/Zero-One-Notes-Startups-Future/dp/0804139296" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Y Combinator</div>
+                                <div class="yt-desc">The ultimate startup accelerator sharing their library of founder advice.</div>
+                                <a href="https://www.youtube.com/c/YCombinator" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/RkM2B4yZks4" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">How to Build a $100M Business</div>
+                                <div class="yt-desc">Alex Hormozi shares aggressive growth tactics and structural breakdowns for massive scaling.</div>
+                                <a href="https://youtu.be/RkM2B4yZks4" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Slidebean</div>
+                                <div class="yt-desc">Startup insights, pitch deck breakdowns, and business models explained with brilliant animation.</div>
+                                <a href="https://www.youtube.com/c/Slidebean" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('business-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('business-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="business-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Business Idea Evaluation</div>
+                                <div class="item-desc">Worksheet to score potential ventures on viability and market size.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Offer Design Template</div>
+                                <div class="item-desc">Framework for crafting high-converting value propositions.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Marketing Funnel Blueprint</div>
+                                <div class="item-desc">Visual map of customer acquisition, from awareness to retention.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 6: Practical Life Skills -->
+        <section id="lifeskills" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-tools"></i> Practical Life Skills</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('life-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('life-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="life-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Magic of Tidying Up</div>
+                                <div class="item-subtitle">Organization</div>
+                                <div class="item-desc">The Japanese art of decluttering and organizing your space.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Marie Kondo</span><span><strong>Published:</strong> 2011</span></div>
+                                    <a href="https://www.amazon.com/Life-Changing-Magic-Tidying-Decluttering-Organizing/dp/1607747308" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Salt, Fat, Acid, Heat</div>
+                                <div class="item-subtitle">Culinary Skills</div>
+                                <div class="item-desc">Mastering the elements of good cooking without relying on strict recipes.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Samin Nosrat</span><span><strong>Published:</strong> 2017</span></div>
+                                    <a href="https://www.amazon.com/Salt-Fat-Acid-Heat-Mastering/dp/1476753830" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Complete Tightwad Gazette</div>
+                                <div class="item-subtitle">Frugality</div>
+                                <div class="item-desc">Promoting thrift as a viable alternative lifestyle with practical tips.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Amy Dacyczyn</span><span><strong>Published:</strong> 1998</span></div>
+                                    <a href="https://www.amazon.com/Complete-Tightwad-Gazette-Promoting-Thrift/dp/0375752250" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/B1qK0U2-8n0" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Binging with Babish: Basics</div>
+                                <div class="yt-desc">Incredible cooking tutorials breaking down culinary basics. This is a must-watch foundational lesson.</div>
+                                <a href="https://youtu.be/B1qK0U2-8n0" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Dad, How Do I?</div>
+                                <div class="yt-desc">Practical "dad advice" for everyday tasks like fixing a toilet or tying a tie.</div>
+                                <a href="https://www.youtube.com/c/Dadhowdoi" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/Lpc5_1896ro" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Marie Kondo: Basic Folding</div>
+                                <div class="yt-desc">Learn the ultimate space-saving technique to fold almost anything in your wardrobe.</div>
+                                <a href="https://youtu.be/Lpc5_1896ro" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('life-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('life-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="life-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Home Maintenance Checklist</div>
+                                <div class="item-desc">Seasonal tasks to keep your living space safe and functional.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Basic Cooking Starter Guide</div>
+                                <div class="item-desc">Pantry staples and 5 foundational recipes every adult should know.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Emergency Preparedness</div>
+                                <div class="item-desc">Checklist for go-bags, local emergency contacts, and disaster readiness.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 7: Digital Independence -->
+        <section id="digital" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-laptop-code"></i> Digital Independence</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('digital-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('digital-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="digital-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The 4-Hour Workweek</div>
+                                <div class="item-subtitle">Lifestyle Design</div>
+                                <div class="item-desc">Escape 9-5, live anywhere, and join the new rich through automation.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Tim Ferriss</span><span><strong>Published:</strong> 2007</span></div>
+                                    <a href="https://www.amazon.com/4-Hour-Workweek-Escape-Live-Anywhere/dp/0307465357" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Almanack of Naval Ravikant</div>
+                                <div class="item-subtitle">Wealth & Happiness</div>
+                                <div class="item-desc">A guide to wealth and happiness from the legendary angel investor.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Eric Jorgenson</span><span><strong>Published:</strong> 2020</span></div>
+                                    <a href="https://www.amazon.com/Almanack-Naval-Ravikank-Wealth-Happiness/dp/1544514212" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Show Your Work!</div>
+                                <div class="item-subtitle">Audience Building</div>
+                                <div class="item-desc">10 ways to share your creativity and get discovered on the internet.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Austin Kleon</span><span><strong>Published:</strong> 2014</span></div>
+                                    <a href="https://www.amazon.com/Show-Your-Work-Creativity-Discovered/dp/076117897X" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Matt Wolfe</div>
+                                <div class="yt-desc">Exploring the latest AI tools and how to leverage them for digital income.</div>
+                                <a href="https://www.youtube.com/c/mreflow" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/YpXqibBtzrI" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Creator Science: Deep Dive</div>
+                                <div class="yt-desc">An incredible interview diving into the business models of top digital creators.</div>
+                                <a href="https://youtu.be/YpXqibBtzrI" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Futurepedia AI Overview</div>
+                                <div class="yt-desc">Updates on the AI revolution and the specific software needed to make you digitally independent.</div>
+                                <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('digital-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('digital-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="digital-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Online Income Model Map</div>
+                                <div class="item-desc">Breakdown of SaaS, newsletters, agencies, and info-products.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">AI Tools Directory</div>
+                                <div class="item-desc">A curated list of high-leverage software to replace tedious tasks.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Digital Security Checklist</div>
+                                <div class="item-desc">Password managers, 2FA, and basic op-sec for the independent worker.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillar 8: Artificial Intelligence -->
+        <section id="ai" class="pillar-section">
+            <h1 class="page-title"><i class="fas fa-robot"></i> Artificial Intelligence</h1>
+            <div class="card">
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-book"></i> Books</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('ai-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('ai-books', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="ai-books" class="item-container grid-view">
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Life 3.0</div>
+                                <div class="item-subtitle">AI & Future of Humanity</div>
+                                <div class="item-desc">Being human in the age of Artificial Intelligence and what it means for our future.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Max Tegmark</span><span><strong>Published:</strong> 2017</span></div>
+                                    <a href="https://www.amazon.com/Life-3-0-Being-Artificial-Intelligence/dp/1101970316" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Superintelligence</div>
+                                <div class="item-subtitle">Philosophy & Tech</div>
+                                <div class="item-desc">Paths, dangers, and strategies navigating a world where machines outsmart humans.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Nick Bostrom</span><span><strong>Published:</strong> 2014</span></div>
+                                    <a href="https://www.amazon.com/Superintelligence-Dangers-Strategies-Nick-Bostrom/dp/0198739834" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner book-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">The Coming Wave</div>
+                                <div class="item-subtitle">Tech Policy</div>
+                                <div class="item-desc">Technology, power, and the twenty-first century's greatest dilemmas involving AI.</div>
+                                <div class="item-footer">
+                                    <div class="item-meta"><span><strong>Author:</strong> Mustafa Suleyman</span><span><strong>Published:</strong> 2023</span></div>
+                                    <a href="https://www.amazon.com/Coming-Wave-Technology-Twenty-first-Centurys/dp/0593593952" target="_blank" class="cta-btn vault-action">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+                    <div class="yt-scroller">
+                        
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/zjkBMFhNj_g" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Intro to Large Language Models</div>
+                                <div class="yt-desc">Andrej Karpathy's famous, approachable deep dive into neural networks and how LLMs actually work.</div>
+                                <a href="https://youtu.be/zjkBMFhNj_g" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                        <!-- Channel Banner -->
+                        <div class="yt-card">
+                            <div class="yt-banner"></div>
+                            <div class="yt-content">
+                                <div class="yt-title">Two Minute Papers</div>
+                                <div class="yt-desc">Awesome AI research papers and breathtaking new breakthroughs explained simply.</div>
+                                <a href="https://www.youtube.com/@TwoMinutePapers" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Video -->
+                        <div class="yt-card">
+                            <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen></iframe>
+                            <div class="yt-content">
+                                <div class="yt-title">Local LLM Setup Tutorial</div>
+                                <div class="yt-desc">Matthew Berman breaks down tutorials, testing, and news on the latest open-source AI models.</div>
+                                <a href="https://youtu.be/9bZkp7q19f0" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="sub-section">
+                    <div class="flex-between section-header">
+                        <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                        <div class="view-toggles">
+                            <button class="view-btn active" onclick="setView('ai-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" onclick="setView('ai-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="ai-tools" class="item-container grid-view tools-grid">
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Prompt Engineering Guide</div>
+                                <div class="item-desc">A structured framework to get the best outputs from Large Language Models.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">AI Image Gen Cheat Sheet</div>
+                                <div class="item-desc">Mastering parameters and styles for Midjourney and Stable Diffusion.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Tool</a></div>
+                            </div>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-banner tool-banner"></div>
+                            <div class="item-content">
+                                <div class="item-title">Local LLM Setup Script</div>
+                                <div class="item-desc">Step-by-step instructions to run uncensored AI models locally on your machine.</div>
+                                <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // --- Core Knowledge Vault Logic & Progress Tracking ---
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Generate Status Badges & Track Progress
+            const actionBtns = document.querySelectorAll('.vault-action');
+            const progressFill = document.getElementById('progress-fill-ui');
+            const progressText = document.getElementById('progress-text-ui');
+            const totalText = document.getElementById('total-text-ui');
+            
+            let totalItems = actionBtns.length;
+            let completedItems = 0;
+            
+            totalText.innerText = totalItems;
+
+            function updateProgressUI() {
+                const percentage = totalItems === 0 ? 0 : (completedItems / totalItems) * 100;
+                progressFill.style.width = `${percentage}%`;
+                progressText.innerText = completedItems;
+
+                if (percentage > 0) {
+                    progressText.classList.add('success');
+                }
+                
+                if (percentage === 100) {
+                    progressFill.classList.add('success');
+                }
+            }
+
+            actionBtns.forEach(btn => {
+                // Find parent card (handles both books/tools and youtube cards)
+                const card = btn.closest('.item-card') || btn.closest('.yt-card');
+                
+                if (card) {
+                    // Inject floating dot badge dynamically
+                    let badge = document.createElement('div');
+                    badge.className = 'status-badge';
+                    badge.title = 'Uncompleted';
+                    card.appendChild(badge);
+
+                    // Attach click listener to CTA
+                    btn.addEventListener('click', (e) => {
+                        // We do NOT prevent default, allowing the link to still open in a new tab.
+                        
+                        if (!badge.classList.contains('completed')) {
+                            badge.classList.add('completed');
+                            badge.title = 'Completed';
+                            
+                            // Visual update for the button
+                            btn.classList.add('completed-btn');
+                            btn.innerHTML = '<i class="fas fa-check"></i> Completed';
+                            
+                            completedItems++;
+                            updateProgressUI();
+                        }
+                    });
+                }
+            });
+
+            // Initialize Progress
+            updateProgressUI();
+        });
+
+        // --- View Toggling (Grid / List) ---
+        function setView(containerId, viewType, btnElement) {
+            const container = document.getElementById(containerId);
+            
+            container.classList.remove('grid-view', 'list-view');
+            container.classList.add(viewType + '-view');
+
+            const buttonGroup = btnElement.parentElement.querySelectorAll('.view-btn');
+            buttonGroup.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // --- Draggable Top Navigation Bar ---
+        const tagsHeader = document.getElementById('tagsHeader');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let isDragging = false; // Flag to distinguish drag from click
+
+        tagsHeader.addEventListener('mousedown', (e) => {
+            isDown = true;
+            isDragging = false; 
+            tagsHeader.classList.add('dragging');
+            startX = e.pageX - tagsHeader.offsetLeft;
+            scrollLeft = tagsHeader.scrollLeft;
+        });
+
+        tagsHeader.addEventListener('mouseleave', () => {
+            isDown = false;
+            tagsHeader.classList.remove('dragging');
+        });
+
+        tagsHeader.addEventListener('mouseup', () => {
+            isDown = false;
+            tagsHeader.classList.remove('dragging');
+        });
+
+        tagsHeader.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault(); // Stop text selection
+            const x = e.pageX - tagsHeader.offsetLeft;
+            const walk = (x - startX) * 2; // Scroll-fast multiplier
+            
+            if (Math.abs(walk) > 5) {
+                isDragging = true; // Mark as dragging if moved significantly
+            }
+            
+            tagsHeader.scrollLeft = scrollLeft - walk;
+        });
+
+        // --- Smooth Scrolling & Tag Activation ---
+        const tags = document.querySelectorAll('.tag-btn');
+        const sections = document.querySelectorAll('.pillar-section');
+
+        tags.forEach(tag => {
+            tag.addEventListener('click', function(e) {
+                // If the user was dragging the menu, don't trigger the button click
+                if (isDragging) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                e.preventDefault();
+                
+                // Remove active class from all tags and sections
+                tags.forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Add active to clicked tag
+                this.classList.add('active');
+
+                // Show target section
+                const targetId = this.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+                
+                if(targetElement) {
+                    targetElement.classList.add('active');
+                    // Scroll back to top to view the new section from the beginning smoothly
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+
+        // --- Back to Top Functionality ---
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
