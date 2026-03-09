@@ -1307,13 +1307,16 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
             <section id="iframe-container" class="view-section" style="height: 100%; position: relative;">
                 <!-- Added missing iframe loader needed by JS -->
 
-<div id="iframe-loader" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:var(--primary); font-family:var(--font-tech); text-align: center;">
-    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" 
-         alt="LifeOS Logo" 
-         class="heartbeat-icon" 
-         style="width: 60px; height: auto; display: block; margin: 0 auto 15px auto;">
-    <div style="margin-top: 15px; letter-spacing: 2px;">LOADING MODULE...</div>
-</div>
+    <!-- Iframe loader with animated GIF -->
+    <div id="iframe-loader" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:var(--primary); font-family:var(--font-tech); text-align: center;">
+        <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" 
+             alt="LifeOS Logo" 
+             class="heartbeat-icon" 
+             style="width: 60px; height: auto; display: block; margin: 0 auto 15px auto;">
+        <div style="margin-top: 15px; letter-spacing: 2px;">LOADING MODULE...</div>
+    </div>
+
+
                 
                 <iframe id="app-frame" style="width:100%; height:100%; border:none; border-radius:12px; background:var(--bg-darker); transition: opacity 0.3s;"></iframe>
             </section>
@@ -1395,8 +1398,10 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     new Chart(ctx, { type: 'radar', data: chartData, options: { responsive: true, maintainAspectRatio: false, scales: { r: { angleLines: { color: 'rgba(255, 255, 255, 0.1)' }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, pointLabels: { color: '#888', font: { family: 'Orbitron', size: 10 } }, ticks: { display: false } } }, plugins: { legend: { display: false } } } });
 </script>
 
+
 <script>
-    // Navigation & Iframe Logic
+// NAVIGATION & IFRAME LOGIC
+(function() {
     const navBtns = document.querySelectorAll('.nav-btn');
     const dashboardView = document.getElementById('dashboard');
     const iframeView = document.getElementById('iframe-container');
@@ -1419,18 +1424,45 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
                 dashboardView.classList.remove('active');
                 iframeView.classList.add('active');
                 
-                // Fixed: Only trigger reload if the URL has actually changed
+                // Only trigger reload if the URL has actually changed
                 if (appFrame.getAttribute('src') !== targetUrl) {
+                    // Show loader
                     if(iframeLoader) iframeLoader.style.display = 'block';
                     appFrame.style.opacity = '0';
+                    
+                    // Record start time for minimum 5 second display
+                    const loadStartTime = Date.now();
+                    const minimumDisplayTime = 5000; // 5 seconds
+                    
                     appFrame.setAttribute('src', targetUrl);
                     
-                    // Fixed: Add fallback timeout to hide loader if iframe blocks load event
+                    // Clear any existing timeout
                     clearTimeout(appFrame.loadTimeout);
+                    
+                    // Set up the load event listener
+                    appFrame.onload = function() {
+                        const loadEndTime = Date.now();
+                        const elapsedTime = loadEndTime - loadStartTime;
+                        const remainingTime = Math.max(0, minimumDisplayTime - elapsedTime);
+                        
+                        // Wait remaining time before hiding loader
+                        setTimeout(() => {
+                            if(iframeLoader) iframeLoader.style.display = 'none';
+                            appFrame.style.opacity = '1';
+                        }, remainingTime);
+                    };
+                    
+                    // Fallback timeout in case iframe doesn't fire load event
                     appFrame.loadTimeout = setTimeout(() => {
-                        if(iframeLoader) iframeLoader.style.display = 'none';
-                        appFrame.style.opacity = '1';
-                    }, 5000);
+                        const loadEndTime = Date.now();
+                        const elapsedTime = loadEndTime - loadStartTime;
+                        const remainingTime = Math.max(0, minimumDisplayTime - elapsedTime);
+                        
+                        setTimeout(() => {
+                            if(iframeLoader) iframeLoader.style.display = 'none';
+                            appFrame.style.opacity = '1';
+                        }, remainingTime);
+                    }, 8000); // Fallback after 8 seconds
                 } else {
                     // Already loaded, just make sure it's visible
                     if(iframeLoader) iframeLoader.style.display = 'none';
@@ -1439,14 +1471,81 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
             }
         });
     });
+})();
+</script>
 
-    appFrame.addEventListener('load', () => {
-        clearTimeout(appFrame.loadTimeout);
-        if(iframeLoader) iframeLoader.style.display = 'none';
-        appFrame.style.opacity = '1';
-    });
 
-    /* SWIPE GESTURE LOGIC FOR MOBILE SIDEBAR */
+    
+    
+<script>
+// PAGE LOADER SCRIPT - Controls the initial loading screen
+(function() {
+    function initLoader() {
+        const loader = document.getElementById('loader');
+        if (!loader) return;
+        
+        const progressBar = loader.querySelector('.loader-progress-bar');
+        const loaderPercent = loader.querySelector('.loader-percentage');
+        
+        if (!progressBar) return;
+        
+        let progress = 0;
+        const terminalLines = loader.querySelectorAll('.terminal-line');
+        
+        // Show terminal lines one by one
+        terminalLines.forEach((line, index) => {
+            setTimeout(() => {
+                line.style.opacity = '1';
+            }, index * 200);
+        });
+        
+        // Target total duration of 3 seconds (3000ms)
+        const totalDuration = 3000; // 3 seconds
+        const intervalTime = 50; // Update every 50ms for smooth animation
+        const steps = totalDuration / intervalTime;
+        const incrementPerStep = 100 / steps;
+        
+        const interval = setInterval(() => {
+            progress += incrementPerStep;
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Add a small delay before hiding
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    // Initialize any page animations if needed
+                    if (typeof initPageAnimations === 'function') {
+                        initPageAnimations();
+                    }
+                }, 500);
+            }
+            
+            progressBar.style.width = progress + '%';
+            if (loaderPercent) {
+                loaderPercent.textContent = Math.floor(progress) + '%';
+            }
+        }, intervalTime);
+    }
+
+    // Call the loader when the page loads
+    document.addEventListener('DOMContentLoaded', initLoader);
+})();
+</script>
+
+
+
+
+
+
+
+    
+
+
+<script>
+// SWIPE GESTURE LOGIC FOR MOBILE SIDEBAR
+(function() {
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -1474,7 +1573,10 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
             }
         }
     }
+})();
 </script>
+
+    
 
 <script>
     /* EXTERNAL LINK INTERCEPTOR */
@@ -1841,14 +1943,7 @@ function initLoader() {
     
     let progress = 0;
     const terminalLines = loader.querySelectorAll('.terminal-line');
-    
-    // Show terminal lines one by one
-    terminalLines.forEach((line, index) => {
-        setTimeout(() => {
-            line.style.opacity = '1';
-        }, index * 200);
-    });
-    
+
     // Target total duration of 3 seconds (3000ms)
     const totalDuration = 3000; // 3 seconds
     const intervalTime = 50; // Update every 50ms for smooth animation
