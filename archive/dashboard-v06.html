@@ -80,7 +80,7 @@
             display: flex;
             flex-direction: column;  
             z-index: 10;
-transition: padding var(--sidebar-transition);
+            transition: padding var(--sidebar-transition);
         }
 
         .sidebar-brand {
@@ -91,13 +91,15 @@ transition: padding var(--sidebar-transition);
             white-space: nowrap;
         }
 
+        /* NEW LOGO STYLING */
         .brand-logo {
-            width: 90px;
+            width: 85px; /* Sized perfectly for the sidebar */
             height: auto;
+            display: block; /* Forces logo onto its own line */
+            margin: 0 auto 15px auto; /* Centers the logo horizontally */
             filter: drop-shadow(0 0 5px rgba(255, 80, 17, 0.3));
             cursor: pointer;
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            margin-bottom: 1rem;
         }
 
         .brand-logo:hover {
@@ -105,16 +107,16 @@ transition: padding var(--sidebar-transition);
             transform: scale(1.1) translateY(-5px);
         }
 
-        .sidebar-brand i {
-            font-size: 50px;
+        .brand-icon-alt {
+            font-size: 30px; /* Sized to match the other collapsed icons */
             color: var(--primary);
-            margin-bottom: 15px;
-            display: block;
+            margin: 0 auto 15px auto;
+            display: none; /* Hidden when sidebar is expanded */
             cursor: pointer;
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .sidebar-brand i:hover {
+        .brand-icon-alt:hover {
             color: var(--primary);
             text-shadow: 0 0 15px var(--bg-card);
             filter: blur(0.5px) brightness(1.2);
@@ -234,6 +236,15 @@ transition: padding var(--sidebar-transition);
             align-items: center;
         }
 
+        /* Swap Logo Image for Icon when collapsed */
+        .container.collapsed .brand-logo {
+            display: none;
+        }
+
+        .container.collapsed .brand-icon-alt {
+            display: block;
+        }
+
         .container.collapsed .sidebar button {
             justify-content: center;
             padding: 12px 0;
@@ -247,17 +258,16 @@ transition: padding var(--sidebar-transition);
         }
 
         /* Hiding text elements with a slide-out effect */
-/* Hiding text elements with a slide-out effect */
-.container.collapsed .sidebar-brand h2, 
-.container.collapsed .sidebar-brand .version-tag,
-.container.collapsed .sidebar button span, /* Updated to match your HTML structure */
-.container.collapsed .version-tag span {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-10px);
-    transition: all 0.2s ease; /* Faster fade out so it disappears before the sidebar crushes it */
-    display: inline-block; /* Allows transform without absolute positioning */
-}
+        .container.collapsed .sidebar-brand h2, 
+        .container.collapsed .sidebar-brand .version-tag,
+        .container.collapsed .sidebar button span,
+        .container.collapsed .version-tag span {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-10px);
+            transition: all 0.2s ease;
+            display: none; /* This completely removes the invisible text so icons center perfectly */
+        }
 
         /* Keeping footer icon visible */
         .container.collapsed .version-tag i {
@@ -860,8 +870,9 @@ transition: padding var(--sidebar-transition);
             </div>
         </div>
         
-<div class="sidebar-brand" id="os-brand">
-            <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" alt="Brand Logo" class="brand-logo" id="brand-icon">
+        <div class="sidebar-brand" id="os-brand">
+            <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" alt="Brand Logo" class="brand-logo" id="brand-image">
+            <i class="fas fa-fingerprint brand-icon-alt" id="brand-icon"></i>
             <h2 id="brand-title">LIFE OS</h2>
             <div class="version-tag" id="brand-version">Sys. Version 2.0.4</div>
         </div>
@@ -917,14 +928,6 @@ transition: padding var(--sidebar-transition);
                 
                 <div class="dashboard-2col" id="dashboard-row-1">
 
-
-
-
-
-
-
-                  
-                  
                     <!-- LIFE SCORE RADAR -->
                     <div class="card" id="card-life-score">
                         <h3 id="title-life-score"><i class="fas fa-crosshairs"></i> Life Score by Area</h3>
@@ -935,12 +938,6 @@ transition: padding var(--sidebar-transition);
                             <span class="metric-small" style="color: var(--primary);" id="metric-system-avg">System Average: 63/100</span>
                         </div>
                     </div>
-
-
-
-
-
-                  
 
                     <!-- DAILY ROUTINES -->
                     <div class="card" id="card-daily-routines">
@@ -973,19 +970,8 @@ transition: padding var(--sidebar-transition);
                     </div>
                 </div>
 
-
-
-
-
-
-
-              
-
                 <div class="dashboard" id="dashboard-row-2">
 
-
-
-                  
                     <!-- ACTIVE GOALS -->
                     <div class="card" id="card-active-goals">
                         <h3 id="title-active-goals"><i class="fas fa-flag-checkered"></i> Active Goals</h3>
@@ -1015,12 +1001,6 @@ transition: padding var(--sidebar-transition);
                         </div>
                     </div>
 
-
-
-
-
-                  
-
                     <!-- PERSONAL FINANCES -->
                     <div class="card" id="card-financial-hub">
                         <h3 id="title-financial-hub"><i class="fas fa-wallet"></i> Financial Hub</h3>
@@ -1042,14 +1022,6 @@ transition: padding var(--sidebar-transition);
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-                  
 
                     <!-- RECOMMENDED ACTIONS -->
                     <div class="card" id="card-progress-engine">
