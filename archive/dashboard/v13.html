@@ -465,7 +465,208 @@
                 margin-left: auto;
                 order: 1;
             }
-        }        
+        } 
+
+
+
+
+
+
+            /* AI Agent UI Styles */
+    #ai-popup-container {
+        position: fixed; 
+        bottom: 100px; 
+        right: 30px; 
+        width: 400px; 
+        height: 620px;
+        background: var(--bg-card, #121212); 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden; 
+        z-index: 1000;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        transform-origin: bottom right; 
+        opacity: 0; 
+        transform: scale(0.1) translateY(100px); 
+        pointer-events: none;
+    }
+    
+    #ai-popup-container.active { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+        pointer-events: auto; 
+    }
+    
+    .ai-popup-header { 
+        background: var(--bg-card, #121212); 
+        padding: 15px 20px; 
+        border-bottom: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        font-family: var(--font-tech, 'Orbitron', monospace); 
+        color: var(--primary, #ff5011); 
+        font-size: 14px; 
+    }
+    
+    .ai-header-controls { 
+        display: flex; 
+        gap: 15px; 
+        align-items: center; 
+    }
+    
+    .ai-header-controls button { 
+        background: none; 
+        border: none; 
+        color: var(--text-muted, #a0a0a0); 
+        cursor: pointer; 
+        font-size: 16px; 
+        transition: 0.2s; 
+    }
+    
+    .ai-header-controls button:hover { 
+        color: var(--primary, #ff5011); 
+    }
+    
+    #ai-chat-body { 
+        flex-grow: 1; 
+        padding: 20px; 
+        overflow-y: auto; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 15px; 
+        background: var(--bg-dark, #000000); 
+    }
+    
+    .ai-msg { 
+        max-width: 85%; 
+        padding: 10px 14px; 
+        border-radius: 12px; 
+        font-size: 13px; 
+        line-height: 1.5; 
+        color: var(--text-main, #f5f5f5);
+    }
+    
+    .ai-msg-bot { 
+        align-self: flex-start; 
+        background: var(--bg-hover, #1a1a1a); 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        border-bottom-left-radius: 2px; 
+    }
+    
+    .ai-msg-user { 
+        align-self: flex-end; 
+        background: var(--primary, #ff5011); 
+        color: #fff; 
+        border-bottom-right-radius: 2px; 
+    }
+    
+    .ai-options-container { 
+        display: flex; 
+        gap: 8px; 
+        padding: 10px 15px; 
+        background: var(--bg-dark, #000000); 
+        border-top: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        overflow-x: auto; 
+    }
+    
+    /* Hide scrollbar for options container */
+    .ai-options-container::-webkit-scrollbar { display: none; }
+    .ai-options-container { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .ai-option-btn { 
+        background: var(--bg-hover, #1a1a1a); 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        color: var(--text-main, #f5f5f5); 
+        padding: 6px 12px; 
+        border-radius: 20px; 
+        font-size: 11px; 
+        white-space: nowrap; 
+        cursor: pointer; 
+        transition: 0.2s; 
+    }
+    
+    .ai-option-btn:hover { 
+        border-color: var(--primary, #ff5011); 
+        color: var(--primary, #ff5011); 
+    }
+    
+    .ai-input-area { 
+        padding: 15px; 
+        border-top: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        display: flex; 
+        gap: 10px; 
+        background: var(--bg-darker, #050505); 
+    }
+    
+    .ai-input-area input { 
+        flex-grow: 1; 
+        background: #111; 
+        border: 1px solid var(--border, rgba(255,255,255,0.1)); 
+        color: #fff; 
+        padding: 10px 15px; 
+        border-radius: 8px; 
+        outline: none; 
+        font-size: 13px; 
+    }
+    
+    .ai-input-area button { 
+        background: var(--primary, #ff5011); 
+        border: none; 
+        color: #fff; 
+        width: 40px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        transition: 0.2s;
+    }
+    
+    .ai-input-area button:hover {
+        filter: brightness(1.2);
+    }
+    
+    .ai-assistant-btn { 
+        position: fixed; 
+        bottom: 30px; 
+        right: 30px; 
+        width: 60px; 
+        height: 60px; 
+        background: var(--primary, #ff5011); 
+        border-radius: 50%; 
+        border: none;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        color: #fff; 
+        font-size: 24px; 
+        box-shadow: 0 0 20px rgba(255,80,17,0.4); 
+        cursor: pointer; 
+        z-index: 100; 
+        transition: 0.3s; 
+    }
+    
+    .ai-assistant-btn:hover { 
+        transform: scale(1.1); 
+        box-shadow: 0 0 30px rgba(255,80,17,0.6); 
+    }
+
+    .loading-dots:after { 
+        content: ' .'; 
+        animation: dots 1.5s steps(5, end) infinite; 
+    }
+    
+    @keyframes dots { 
+        0%, 20% { content: ' .'; } 
+        40% { content: ' ..'; } 
+        60% { content: ' ...'; } 
+        80%, 100% { content: ''; } 
+    }
+
+
+
+        
     </style>
 </head>
 <body>
@@ -629,6 +830,56 @@
     <i class="fas fa-bars icon-burger"></i>
     <i class="fas fa-times icon-close"></i>
 </button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Gemini AI Assistant -->
+<div id="ai-popup-container">
+    <div class="ai-popup-header">
+        <span style="display: flex; align-items: center; gap: 12px;"><i class="fas fa-robot"></i> SYSTEM AI AGENT</span>
+        <div class="ai-header-controls">
+            <button onclick="resetAIChat()" title="Reset Session"><i class="fas fa-sync-alt"></i></button>
+            <button onclick="toggleAIPopup()" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    <div id="ai-chat-body">
+        <div class="ai-msg ai-msg-bot">System initialized. Dashboard context synced. How shall we optimize your performance today?</div>
+    </div>
+    
+    <div class="ai-options-container">
+        <button class="ai-option-btn" onclick="quickQuery('Daily Strategic Briefing')">Daily Briefing</button>
+        <button class="ai-option-btn" onclick="quickQuery('Analyze my finances')">Financial Analysis</button>
+        <button class="ai-option-btn" onclick="quickQuery('Break down my active goals')">Goal Breakdown</button>
+    </div>
+
+    <div class="ai-input-area">
+        <input type="text" id="ai-chat-input" placeholder="Ask System AI..." onkeypress="if(event.key === 'Enter') sendAIChat()">
+        <button onclick="sendAIChat()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<button class="ai-assistant-btn" onclick="toggleAIPopup()"><i class="fas fa-robot"></i></button>
+
+
+
+
+
+
+
+
+
+    
 
 <script>
     function toggleSidebar() { 
@@ -984,5 +1235,107 @@
     }
 
 </script>
+
+
+
+
+
+
+
+
+
+<!-- AI System Agent JavaScript Logic -->
+<script>
+        // -------------------------------------------------------------
+    // AI SYSTEM AGENT LOGIC
+    // -------------------------------------------------------------
+    const apiKey = ""; 
+
+    async function callGemini(prompt, systemPrompt = "") {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const payload = {
+            contents: [{ parts: [{ text: prompt }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] }
+        };
+
+        for (let i = 0; i < 5; i++) {
+            try {
+                const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "System could not process request.";
+            } catch (e) {
+                if (i === 4) return "Connection timed out. Please verify connectivity.";
+                await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+            }
+        }
+    }
+
+    // Connects to the host OS dashboard to pull data (Ensure these DOM IDs exist in the parent app)
+    function getDashboardContext() {
+        let context = "Context: ";
+        try {
+            const netWorthEl = document.getElementById('widget-net-worth');
+            if (netWorthEl) context += `Net Worth ${netWorthEl.innerText}. `;
+            
+            const goals = Array.from(document.querySelectorAll('#card-active-goals .flex-between')).map(el => el.innerText).join(", ");
+            if (goals) context += `Goals: ${goals}. `;
+            
+            // Depends on chartData existing in the parent window. Safely fallback if missing.
+            if(typeof chartData !== 'undefined') {
+                const scores = chartData.labels.map((l, i) => `${l}: ${chartData.datasets[0].data[i]}`).join(", ");
+                context += `Radar Scores: ${scores}.`;
+            }
+        } catch(e) {
+            console.warn("AI couldn't pull full dashboard context.", e);
+        }
+        return context;
+    }
+
+    function cleanResponse(text) { return text.replace(/[#*]/g, '').trim(); }
+
+    async function sendAIChat() {
+        const input = document.getElementById('ai-chat-input');
+        const query = input.value.trim();
+        if(!query) return;
+
+        const body = document.getElementById('ai-chat-body');
+        body.innerHTML += `<div class="ai-msg ai-msg-user">${query}</div>`;
+        input.value = '';
+        body.scrollTop = body.scrollHeight;
+
+        const loadId = 'ai-' + Date.now();
+        body.innerHTML += `<div class="ai-msg ai-msg-bot" id="${loadId}"><span class="loading-dots">Scanning Nodes</span></div>`;
+        
+        const context = getDashboardContext();
+        const systemPrompt = `You are the Life OS AI. Provide tactical coaching. IMPORTANT: No markdown bolding or headers. Use dashes for bullet points. ${context}`;
+        
+        const response = await callGemini(query, systemPrompt);
+        const cleanTxt = cleanResponse(response);
+        
+        document.getElementById(loadId).innerHTML = cleanTxt.replace(/\n/g, '<br>');
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function quickQuery(text) { 
+        document.getElementById('ai-chat-input').value = text; 
+        sendAIChat(); 
+    }
+    
+    function resetAIChat() { 
+        document.getElementById('ai-chat-body').innerHTML = `<div class="ai-msg ai-msg-bot">System re-initialized. Dashboard context refreshed. How can I help?</div>`; 
+    }
+    
+    function toggleAIPopup() { 
+        document.getElementById('ai-popup-container').classList.toggle('active'); 
+    }
+</script>
+
+
+
+
+
+
+    
 </body>
 </html>
