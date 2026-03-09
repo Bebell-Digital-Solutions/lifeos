@@ -1,23 +1,22 @@
-
-        :root {
-            --primary: #ff5011;
-            --secondary: #333333;
-            --bg-dark: #000000;
-            --bg-darker: #050505;
-            --bg-card: #121212;
-            --bg-hover: #1a1a1a;
-            --text-main: #f5f5f5;
-            --text-muted: #a0a0a0;
-            --border: rgba(255,255,255,0.1);
-            --success: #51cf66;
-            --warning: #ffd43b;
-            --danger: #ef4444;
-            --shadow-glow: 0 0 30px rgba(255,80,17,0.15);
-            --transition: 0.3s;
-            --font-primary: 'Inter', sans-serif;
-            --font-code: 'Fira Code', monospace;
-            --font-tech: 'Orbitron', sans-serif;
-        }
+:root {
+    --primary: #ff5011;
+    --secondary: #333333;
+    --bg-dark: #000000;
+    --bg-darker: #050505;
+    --bg-card: #121212;
+    --bg-hover: #1a1a1a;
+    --text-main: #f5f5f5;
+    --text-muted: #a0a0a0;
+    --border: rgba(255,255,255,0.1);
+    --success: #51cf66;
+    --warning: #ffd43b;
+    --danger: #ef4444;
+    --shadow-glow: 0 0 30px rgba(255, 80, 17, 0.15);
+    --transition: 0.3s;
+    --font-primary: 'Inter', sans-serif;
+    --font-code: 'Fira Code', monospace;
+    --font-tech: 'Orbitron', sans-serif;
+}
 
 * { box-sizing: border-box; }
 
@@ -212,7 +211,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 }
 
 .view-btn:hover { border-color: var(--primary); color: var(--text-main); }
-.view-btn.active { background: rgba(223, 23, 131, 0.1); border-color: var(--primary); color: var(--primary); }
+.view-btn.active { background: rgba(255, 80, 17, 0.1); border-color: var(--primary); color: var(--primary); }
 
 /* Dynamic Grid / List Views */
 .item-container.grid-view { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
@@ -231,7 +230,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 }
 
 .item-card:hover {
-    border-color: rgba(223, 23, 131, 0.5);
+    border-color: rgba(255, 80, 17, 0.5);
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
@@ -309,7 +308,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     transition: var(--transition); text-transform: uppercase;
     text-align: center; font-weight: 600;
 }
-.cta-btn:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px rgba(223, 23, 131, 0.4); }
+.cta-btn:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px rgba(255, 80, 17, 0.4); }
 .cta-btn.completed-btn { background: rgba(81, 207, 102, 0.1); border-color: var(--success); color: var(--success); }
 .cta-btn.completed-btn:hover { background: var(--success); color: #fff; box-shadow: 0 0 15px rgba(81, 207, 102, 0.4); }
 
@@ -339,7 +338,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     flex-direction: column;
 }
 .yt-card:hover { 
-    border-color: rgba(223, 23, 131, 0.5); 
+    border-color: rgba(255, 80, 17, 0.5); 
     transform: translateY(-3px); 
     box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
 }
@@ -373,11 +372,6 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     flex-grow: 1; 
 }
 
-
-
-
-
-
 /* Back to top button */
 #backToTop {
     position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
@@ -389,18 +383,9 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 #backToTop.visible { opacity: 1; visibility: visible; }
 #backToTop:hover { background: var(--primary); color: #fff; box-shadow: var(--shadow-glow); transform: translateY(-5px); }
 
-
-
-
-
-
 @media(max-width: 1200px) {
     .item-container.grid-view.tools-grid { grid-template-columns: repeat(3, 1fr); }
 }
-
-
-
-
 
 @media(max-width: 1024px) {
     .item-container.grid-view { grid-template-columns: repeat(2, 1fr); }
@@ -410,10 +395,6 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     .main-container { padding: 20px; }
 }
 
-
-
-
-
 @media(max-width: 768px) {
     .item-container.grid-view { grid-template-columns: 1fr; }
     .item-container.grid-view.tools-grid { grid-template-columns: 1fr; }
@@ -421,10 +402,3 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     .list-view .item-banner { width: 100%; height: auto; aspect-ratio: 4 / 3; }
     .yt-card { flex: 0 0 280px; }
 }
-
-
-
-
-
-
-
