@@ -175,3 +175,28 @@ window.addEventListener('scroll', () => {
 window.scrollToTop = function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+
+
+
+
+// Life OS - Sub-page Broadcaster Sync Script
+window.addEventListener('DOMContentLoaded', () => {
+    
+    // Grab all text content inside the body of this page
+    const pageContent = document.body.innerText || "";
+
+    // Package the data to send to the Master OS
+    const payload = {
+        type: 'REGISTER_SEARCH_INDEX',
+        url: window.location.href, // The URL of this specific page
+        title: document.title, // Uses the <title> tag of this page
+        content: pageContent.substring(0, 10000), // Captures text (limited to 10k chars to keep it lightning fast)
+        pageType: 'Internal Vault Page' // You can customize this if needed, or pull from a meta tag
+    };
+
+    // Securely transmit the data to the parent dashboard (if it's loaded inside an iframe)
+    if (window.parent !== window) {
+        window.parent.postMessage(payload, '*');
+    }
+});
