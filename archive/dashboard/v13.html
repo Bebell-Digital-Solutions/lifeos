@@ -1016,7 +1016,7 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 
 
 
-
+/* Inner Page Loader Animation with enhanced glow */
 /* Inner Page Loader Animation with enhanced glow */
 /* Smooth breathing animation with glow */
 @keyframes smoothPulse {
@@ -1035,11 +1035,12 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
 }
 
 .heartbeat-icon {
-    font-size: 48px;
-    color: var(--primary);
     animation: smoothPulse 2.8s ease-in-out infinite;
     display: block;
     margin: 0 auto 15px auto;
+    /* Remove any default icon styling since we're using an image */
+    font-size: inherit;
+    color: inherit;
 }
 
 /* Container styling for better presentation */
@@ -1057,7 +1058,6 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     padding: 30px 40px;
     border-radius: 16px;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 80, 17, 0.2);
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 80, 17, 0.3);
 }
 
@@ -1068,8 +1068,6 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
     color: var(--text-main);
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
-
-
 
 
         
@@ -1308,10 +1306,15 @@ a, button, input[type="submit"], label, .nav-link, .social-link, .service-link, 
             
             <section id="iframe-container" class="view-section" style="height: 100%; position: relative;">
                 <!-- Added missing iframe loader needed by JS -->
+
 <div id="iframe-loader" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:var(--primary); font-family:var(--font-tech); text-align: center;">
-    <i class="fas fa-fingerprint heartbeat-icon"></i>
+    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/13fef58f1138628f42515e47588b8c8ea56c4368.png" 
+         alt="LifeOS Logo" 
+         class="heartbeat-icon" 
+         style="width: 60px; height: auto; display: block; margin: 0 auto 15px auto;">
     <div style="margin-top: 15px; letter-spacing: 2px;">LOADING MODULE...</div>
 </div>
+                
                 <iframe id="app-frame" style="width:100%; height:100%; border:none; border-radius:12px; background:var(--bg-darker); transition: opacity 0.3s;"></iframe>
             </section>
 
