@@ -1,1 +1,53 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Vault | Self-Development Library</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="sticky-wrapper">
+        <header class="tags-header" id="tagsHeader">
+            <div class="brand-logo">KNOWLEDGE <span>VAULT</span></div>
+            <button class="tag-btn active" data-target="mindset">Mindset & Psychology</button>
+            <button class="tag-btn" data-target="finance">Personal Finance</button>
+            <button class="tag-btn" data-target="health">Health & Wellness</button>
+            <button class="tag-btn" data-target="career">Career & Skills</button>
+            <button class="tag-btn" data-target="business">Business & Entrepreneurship</button>
+            <button class="tag-btn" data-target="lifeskills">Life Skills</button>
+            <button class="tag-btn" data-target="digital">Digital Independence</button>
+            <button class="tag-btn" data-target="ai">Artificial Intelligence</button>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-stats">
+                <span>Current Pillar Mastery</span>
+                <span><strong id="progress-text-ui">0</strong> / <span id="total-text-ui">0</span> Modules Completed</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill-ui"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container" id="content-container">
+        <div style="text-align: center; color: var(--text-muted); padding: 50px;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p style="margin-top:15px;">Loading Vault Data...</p>
+        </div>
+    </div>
+
+    <button id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
