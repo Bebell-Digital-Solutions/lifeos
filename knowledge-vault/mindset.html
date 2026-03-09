@@ -1,176 +1,130 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const contentContainer = document.getElementById('content-container');
-    const tags = document.querySelectorAll('.tag-btn');
-    const progressFill = document.getElementById('progress-fill-ui');
-    const progressText = document.getElementById('progress-text-ui');
-    const totalText = document.getElementById('total-text-ui');
+<section id="mindset" class="pillar-section active">
+    <h1 class="page-title"><i class="fas fa-brain"></i> Mindset and Psychology</h1>
+    
+    <div class="card">
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-book"></i> Books</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('mindset-books', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('mindset-books', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="mindset-books" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner book-banner"></div>
+                    <div class="item-content">
+                        <div class="item-title">Thinking, Fast and Slow</div>
+                        <div class="item-subtitle">Behavioral Economics</div>
+                        <div class="item-desc">A deep dive into the two systems that drive the way we think—System 1 is fast and emotional; System 2 is slower and logical.</div>
+                        <div class="item-footer">
+                            <div class="item-meta"><span><strong>Author:</strong> Daniel Kahneman</span><span><strong>Published:</strong> 2011</span></div>
+                            <a href="https://www.amazon.com/Thinking-Fast-Slow-Daniel-Kahneman/dp/0374533555" target="_blank" class="cta-btn vault-action">Read</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner book-banner"></div>
+                    <div class="item-content">
+                        <div class="item-title">Meditations</div>
+                        <div class="item-subtitle">Stoic Philosophy</div>
+                        <div class="item-desc">The personal writings of a Roman Emperor offering profound insights into self-discipline, resilience, and perspective.</div>
+                        <div class="item-footer">
+                            <div class="item-meta"><span><strong>Author:</strong> Marcus Aurelius</span><span><strong>Published:</strong> ~180 AD</span></div>
+                            <a href="https://www.amazon.com/Meditations-New-Translation-Marcus-Aurelius/dp/0812968255" target="_blank" class="cta-btn vault-action">Read</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner book-banner"></div>
+                    <div class="item-content">
+                        <div class="item-title">Atomic Habits</div>
+                        <div class="item-subtitle">Behavior Change</div>
+                        <div class="item-desc">An easy and proven way to build good habits, break bad ones, and master the tiny behaviors that lead to remarkable results.</div>
+                        <div class="item-footer">
+                            <div class="item-meta"><span><strong>Author:</strong> James Clear</span><span><strong>Published:</strong> 2018</span></div>
+                            <a href="https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299" target="_blank" class="cta-btn vault-action">Read</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // Global store for completed items via LocalStorage to maintain state across page loads
-    let completedItemsStore = JSON.parse(localStorage.getItem('vaultCompletedStore')) || [];
+        <div class="sub-section">
+            <div class="flex-between section-header"><h2><i class="fab fa-youtube"></i> YouTube Channels & Videos</h2></div>
+            <div class="yt-scroller">
+                <div class="yt-card">
+                    <iframe src="https://www.youtube.com/embed/yBasnNclE38" allowfullscreen></iframe>
+                    <div class="yt-content">
+                        <div class="yt-title">The Four Temperaments</div>
+                        <div class="yt-desc">The Four Temperament Theory is a proto-psychological theory suggesting that there are four fundamental personality types.</div>
+                        <a href="https://youtu.be/yBasnNclE38" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                    </div>
+                </div>
 
-    function updateProgressUI(currentTotal) {
-        let completedInView = document.querySelectorAll('.status-badge.completed').length;
-        const percentage = currentTotal === 0 ? 0 : (completedInView / currentTotal) * 100;
+                <div class="yt-card">
+                    <div class="yt-banner"></div>
+                    <div class="yt-content">
+                        <div class="yt-title">The School of Life</div>
+                        <div class="yt-desc">A channel applying philosophy, psychology, and literature to everyday life challenges.</div>
+                        <a href="https://www.youtube.com/user/schooloflifechannel" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Visit Channel</a>
+                    </div>
+                </div>
 
-        progressFill.style.width = `${percentage}%`;
-        progressText.innerText = completedInView;
-        totalText.innerText = currentTotal;
+                <div class="yt-card">
+                    <iframe src="https://www.youtube.com/embed/PHe0bXAIuk0" allowfullscreen></iframe>
+                    <div class="yt-content">
+                        <div class="yt-title">How The Economic Machine Works</div>
+                        <div class="yt-desc">A deep dive animated video by Ray Dalio explaining the basic concepts of macroeconomic forces and human psychology.</div>
+                        <a href="https://youtu.be/PHe0bXAIuk0" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                    </div>
+                </div>
 
-        if (percentage > 0) progressText.classList.add('success');
-        else progressText.classList.remove('success');
+                <div class="yt-card">
+                    <iframe src="https://www.youtube.com/embed/PHe0bXAIuk0" allowfullscreen></iframe>
+                    <div class="yt-content">
+                        <div class="yt-title">How The Economic Machine Works</div>
+                        <div class="yt-desc">A deep dive animated video by Ray Dalio explaining the basic concepts of macroeconomic forces and human psychology.</div>
+                        <a href="https://youtu.be/PHe0bXAIuk0" target="_blank" class="cta-btn vault-action" style="margin-top:auto; width:100%; display:block;">Mark Watched</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        if (percentage === 100 && currentTotal > 0) progressFill.classList.add('success');
-        else progressFill.classList.remove('success');
-    }
-
-    // Re-bind actions when new HTML is fetched
-    function initializeCardInteractions() {
-        const actionBtns = document.querySelectorAll('.vault-action');
-        let currentTotal = actionBtns.length;
-
-        actionBtns.forEach(btn => {
-            const card = btn.closest('.item-card') || btn.closest('.yt-card');
-            const itemUrl = btn.href; // We use the href as the unique ID for the item
-
-            if (card) {
-                let badge = card.querySelector('.status-badge');
-                if (!badge) {
-                    badge = document.createElement('div');
-                    badge.className = 'status-badge';
-                    card.appendChild(badge);
-                }
-
-                // Check store and apply initial states
-                if (completedItemsStore.includes(itemUrl)) {
-                    badge.classList.add('completed');
-                    badge.title = 'Completed';
-                    btn.classList.add('completed-btn');
-                    btn.innerHTML = '<i class="fas fa-check"></i> Completed';
-                } else {
-                    badge.title = 'Uncompleted';
-                }
-
-                // Strip old listeners by cloning element
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
-
-                newBtn.addEventListener('click', () => {
-                    if (!badge.classList.contains('completed')) {
-                        badge.classList.add('completed');
-                        badge.title = 'Completed';
-                        newBtn.classList.add('completed-btn');
-                        newBtn.innerHTML = '<i class="fas fa-check"></i> Completed';
-
-                        // Save to storage
-                        if (!completedItemsStore.includes(itemUrl)) {
-                            completedItemsStore.push(itemUrl);
-                            localStorage.setItem('vaultCompletedStore', JSON.stringify(completedItemsStore));
-                        }
-                        updateProgressUI(currentTotal);
-                    }
-                });
-            }
-        });
-        updateProgressUI(currentTotal);
-    }
-
-    // Dynamic Injection Logic
-    async function loadSection(target) {
-        try {
-            const response = await fetch(`${target}.html`);
-            if (!response.ok) throw new Error('File not found');
-            const html = await response.text();
-            contentContainer.innerHTML = html;
-            initializeCardInteractions();
-        } catch (error) {
-            contentContainer.innerHTML = `
-                <div style="padding: 40px; text-align:center; color: var(--danger);">
-                    <h2><i class="fas fa-exclamation-triangle"></i> Error loading module</h2>
-                    <p>Could not load <strong>${target}.html</strong>.</p>
-                    <p style="font-size:12px; margin-top:10px;">Ensure you are using a local server (like Live Server) to prevent CORS policy blocks.</p>
-                </div>`;
-            updateProgressUI(0);
-        }
-    }
-
-    // --- Draggable Top Navigation Bar ---
-    const tagsHeader = document.getElementById('tagsHeader');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-    let isDragging = false; 
-
-    tagsHeader.addEventListener('mousedown', (e) => {
-        isDown = true;
-        isDragging = false; 
-        tagsHeader.classList.add('dragging');
-        startX = e.pageX - tagsHeader.offsetLeft;
-        scrollLeft = tagsHeader.scrollLeft;
-    });
-
-    tagsHeader.addEventListener('mouseleave', () => {
-        isDown = false;
-        tagsHeader.classList.remove('dragging');
-    });
-
-    tagsHeader.addEventListener('mouseup', () => {
-        isDown = false;
-        tagsHeader.classList.remove('dragging');
-    });
-
-    tagsHeader.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault(); 
-        const x = e.pageX - tagsHeader.offsetLeft;
-        const walk = (x - startX) * 2; 
-        if (Math.abs(walk) > 5) isDragging = true; 
-        tagsHeader.scrollLeft = scrollLeft - walk;
-    });
-
-    // Tag Click Events
-    tags.forEach(tag => {
-        tag.addEventListener('click', function(e) {
-            if (isDragging) {
-                e.preventDefault();
-                return;
-            }
-            e.preventDefault();
-            
-            tags.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-
-            const targetId = this.getAttribute('data-target');
-            loadSection(targetId);
-
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-    });
-
-    // Load Default Section based on active class
-    const initialTarget = document.querySelector('.tag-btn.active').getAttribute('data-target');
-    loadSection(initialTarget);
-});
-
-// View Toggle Window Function (Must be global to work with inline onclick tags)
-window.setView = function(containerId, viewType, btnElement) {
-    const container = document.getElementById(containerId);
-    if(container) {
-        container.classList.remove('grid-view', 'list-view');
-        container.classList.add(viewType + '-view');
-
-        const buttonGroup = btnElement.parentElement.querySelectorAll('.view-btn');
-        buttonGroup.forEach(btn => btn.classList.remove('active'));
-        btnElement.classList.add('active');
-    }
-}
-
-// Back to Top Logic
-const backToTopBtn = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 500) backToTopBtn.classList.add('visible');
-    else backToTopBtn.classList.remove('visible');
-});
-
-window.scrollToTop = function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-toolbox"></i> Tools & Resources</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('mindset-tools', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('mindset-tools', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="mindset-tools" class="item-container grid-view tools-grid">
+                <div class="item-card">
+                    <div class="item-banner tool-banner"></div>
+                    <div class="item-content">
+                        <div class="item-title">Stoic Philosophy Summaries</div>
+                        <div class="item-desc">A condensed document of core Stoic tenets for daily reflection.</div>
+                        <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner tool-banner"></div>
+                    <div class="item-content">
+                        <div class="item-title">Cognitive Bias Cheat Sheet</div>
+                        <div class="item-desc">A visual map of the most common logical fallacies and biases.</div>
+                        <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner tool-banner"></div>
+                    <div class="item-content">
+                        <div class="item-title">Decision Making Checklist</div>
+                        <div class="item-desc">A step-by-step framework to remove emotion from critical choices.</div>
+                        <div class="item-footer"><a href="#" target="_blank" class="cta-btn vault-action" style="width:100%; display:block;">Open Doc</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
