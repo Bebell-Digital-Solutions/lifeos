@@ -1,0 +1,460 @@
+<section id="cinema" class="pillar-section active">
+    <h1 class="page-title"><i class="fas fa-film"></i> Cinema & Movies</h1>
+
+    <div class="card">
+        <!-- ==================== DOCUMENTARIES ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-microscope"></i> Documentaries</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-docs', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-docs', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-docs" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2c3e50;"><i class="fas fa-tv" style="font-size:2rem; color:#ecf0f1; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">ihavenotv</div>
+                        <div class="item-subtitle">free documentaries</div>
+                        <div class="item-desc">Stream hundreds of free documentaries – science, history, nature and more.</div>
+                        <div class="item-footer"><a href="https://ihavenotv.com/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1a1a2e;"><i class="fas fa-archive" style="font-size:2rem; color:#e94560; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">The Black Vault</div>
+                        <div class="item-subtitle">declassified docs / video</div>
+                        <div class="item-desc">Massive archive of declassified government documents, including video and case files.</div>
+                        <div class="item-footer"><a href="https://www.theblackvault.com/casefiles/" target="_blank" class="cta-btn vault-action">browse</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== MOVIE RECOMMENDATIONS & DISCOVERY ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-compass"></i> Movie Recommendations</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-recs', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-recs', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-recs" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #4a4e69;"><i class="fas fa-magic" style="font-size:2rem; color:#c9ada7; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Moveme TV</div>
+                        <div class="item-subtitle">personalized picks</div>
+                        <div class="item-desc">App that helps you decide what to watch based on your mood.</div>
+                        <div class="item-footer"><a href="https://app.moveme.tv/" target="_blank" class="cta-btn vault-action">explore</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #22223b;"><i class="fas fa-check-circle" style="font-size:2rem; color:#9a8c98; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Reelgood</div>
+                        <div class="item-subtitle">universal watchlist</div>
+                        <div class="item-desc">Track shows and movies across all streaming services. (Soap genre link)</div>
+                        <div class="item-footer"><a href="https://reelgood.com/genre/soap" target="_blank" class="cta-btn vault-action">soap genre</a></div>
+                    </div>
+                </div>
+                <!-- duplicate reelgood? we'll keep one more? maybe just one -->
+            </div>
+        </div>
+
+        <!-- ==================== TV SERIES ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-tv"></i> TV Series</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-tv', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-tv', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-tv" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2b2d42;"><i class="fas fa-eye" style="font-size:2rem; color#8d99ae; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">WatchSeries.bar</div>
+                        <div class="item-subtitle">tv series online</div>
+                        <div class="item-desc">Stream latest episodes and classic TV series.</div>
+                        <div class="item-footer"><a href="https://watchseries.bar/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2d2d2d;"><i class="fas fa-video" style="font-size:2rem; color#e63946; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">SeriesOnlineHD</div>
+                        <div class="item-subtitle">hd series</div>
+                        <div class="item-desc">Watch TV shows in high definition.</div>
+                        <div class="item-footer"><a href="https://seriesonlinehd.net/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #3a0ca3;"><i class="fas fa-history" style="font-size:2rem; color#f72585; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">MyRetroTVs</div>
+                        <div class="item-subtitle">vintage tv</div>
+                        <div class="item-desc">Classic TV shows and retro commercials.</div>
+                        <div class="item-footer"><a href="https://myretrotvs.com/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <!-- duplicate seriesonline? we'll keep one only -->
+            </div>
+        </div>
+
+        <!-- ==================== MOVIES (STREAMING / DOWNLOAD) ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-clapperboard"></i> Movies</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-movies', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-movies', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-movies" class="item-container grid-view">
+                <!-- main movie list (unique entries, deduplicated) -->
+                <div class="item-card">
+                    <div class="item-banner" style="background: #001d3d;"><i class="fas fa-film" style="font-size:2rem; color#ffc300; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">PRMovies</div>
+                        <div class="item-subtitle">hollywood 2024</div>
+                        <div class="item-desc">Latest Hollywood movies and more.</div>
+                        <div class="item-footer"><a href="https://prmovies.surf/account/page/6/?ptype=post&tax_category%5B0%5D=hollywood&tax_release-year=2024&wpas=1" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #3d5a80;"><i class="fas fa-globe" style="font-size:2rem; color#ee6c4d; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">GaiaFlix</div>
+                        <div class="item-subtitle">conscious media</div>
+                        <div class="item-desc">Stream documentaries, films, and series on spirituality and alternative topics.</div>
+                        <div class="item-footer"><a href="https://www.gaiaflix.xyz/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2b2b2b;"><i class="fas fa-play-circle" style="font-size:2rem; color#f3a683; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Moviepire</div>
+                        <div class="item-subtitle">movies & series</div>
+                        <div class="item-desc">Watch movies and TV shows online.</div>
+                        <div class="item-footer"><a href="https://moviepire.net/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1e272e;"><i class="fas fa-film" style="font-size:2rem; color#05c46b; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Cineby</div>
+                        <div class="item-subtitle">movies & tv</div>
+                        <div class="item-desc">Watch free movies and series (cineby.app).</div>
+                        <div class="item-footer"><a href="https://www.cineby.app/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2c2c2c;"><i class="fas fa-flag-france" style="font-size:2rem; color#3a86ff; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">French-Stream</div>
+                        <div class="item-subtitle">vostfr / vf</div>
+                        <div class="item-desc">Stream movies and series in French or with subtitles.</div>
+                        <div class="item-footer"><a href="https://french-stream.one/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #0b3b5c;"><i class="fas fa-play" style="font-size:2rem; color#1e90ff; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">UFlix</div>
+                        <div class="item-subtitle">free streaming</div>
+                        <div class="item-desc">Watch movies and TV shows online.</div>
+                        <div class="item-footer"><a href="https://uflix.cc/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #4a235a;"><i class="fas fa-star" style="font-size:2rem; color#f7dc6f; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">SuperNova</div>
+                        <div class="item-subtitle">movies & series</div>
+                        <div class="item-desc">Stream the latest movies and TV episodes.</div>
+                        <div class="item-footer"><a href="https://supernova.to/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #283618;"><i class="fas fa-download" style="font-size:2rem; color#bc6c25; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">VegaMovie</div>
+                        <div class="item-subtitle">reviews / info</div>
+                        <div class="item-desc">Movie reviews and streaming links.</div>
+                        <div class="item-footer"><a href="https://vegamovie.reviews/" target="_blank" class="cta-btn vault-action">reviews</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2d2d2d;"><i class="fas fa-film" style="font-size:2rem; color#95a5a6; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">123Movies</div>
+                        <div class="item-subtitle">free movies</div>
+                        <div class="item-desc">Watch free movies online (123Movies mirror).</div>
+                        <div class="item-footer"><a href="https://ww8.123moviesfree.net/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #e63946;"><i class="fas fa-tv" style="font-size:2rem; color#f1faee; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Freeview</div>
+                        <div class="item-subtitle">uk tv & movies</div>
+                        <div class="item-desc">UK-based free streaming service.</div>
+                        <div class="item-footer"><a href="https://www.freeview.co.uk/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1e3f4a;"><i class="fas fa-film" style="font-size:2rem; color#1abc9c; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Fmovies</div>
+                        <div class="item-subtitle">free streaming</div>
+                        <div class="item-desc">Popular free movie site.</div>
+                        <div class="item-footer"><a href="https://www.fmovies.gd/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2c2c2c;"><i class="fas fa-play" style="font-size:2rem; color#e67e22; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Cineby.bz</div>
+                        <div class="item-subtitle">movies & series</div>
+                        <div class="item-desc">Alternative cineby domain.</div>
+                        <div class="item-footer"><a href="https://cineby.bz/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2d2d2d;"><i class="fas fa-film" style="font-size:2rem; color#bdc3c7; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Soap2Day</div>
+                        <div class="item-subtitle">movies & tv</div>
+                        <div class="item-desc">Popular streaming site.</div>
+                        <div class="item-footer"><a href="https://soap2day.host/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #4a2f1a;"><i class="fas fa-play" style="font-size:2rem; color#e67e22; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">YFlix</div>
+                        <div class="item-subtitle">movies online</div>
+                        <div class="item-desc">Stream latest movies.</div>
+                        <div class="item-footer"><a href="https://yflix.to/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2b3a4a;"><i class="fas fa-snowflake" style="font-size:2rem; color#74b9ff; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">MovieFrost</div>
+                        <div class="item-subtitle">free movies</div>
+                        <div class="item-desc">Watch movies online free.</div>
+                        <div class="item-footer"><a href="https://www.moviefrost.com/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2c2c2c;"><i class="fas fa-tv" style="font-size:2rem; color#7f8c8d; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Mappl TV</div>
+                        <div class="item-subtitle">movies & tv</div>
+                        <div class="item-desc">Streaming platform.</div>
+                        <div class="item-footer"><a href="https://mappl.tv/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #6c5b7b;"><i class="fas fa-film" style="font-size:2rem; color#f8a5c2; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">FlixMomo</div>
+                        <div class="item-subtitle">free movies</div>
+                        <div class="item-desc">Watch movies and series.</div>
+                        <div class="item-footer"><a href="https://flixmomo.org/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1e2a3a;"><i class="fas fa-film" style="font-size:2rem; color#3498db; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Wmovies</div>
+                        <div class="item-subtitle">watch online</div>
+                        <div class="item-desc">Free movie streaming.</div>
+                        <div class="item-footer"><a href="https://wmovies.one/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <!-- duplicates: seriesonlinehd, uflix, moviepire already included, no extra -->
+            </div>
+        </div>
+
+        <!-- ==================== LIVE TV CHANNELS ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-broadcast-tower"></i> Live TV Channels</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-live', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-live', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-live" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1a2639;"><i class="fas fa-globe-asia" style="font-size:2rem; color#d4af37; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">TV Garden</div>
+                        <div class="item-subtitle">global live tv</div>
+                        <div class="item-desc">Watch live TV channels from around the world.</div>
+                        <div class="item-footer"><a href="https://tv.garden/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2b2b2b;"><i class="fas fa-camera" style="font-size:2rem; color#95a5a6; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Photocall TV</div>
+                        <div class="item-subtitle">live tv streams</div>
+                        <div class="item-desc">Collection of live TV feeds.</div>
+                        <div class="item-footer"><a href="https://photocalltv.org/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CHROME EXTENSIONS FOR STREAMING ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fab fa-chrome"></i> Streaming Tools & Extensions</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-ext', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-ext', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-ext" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #0f172a;"><i class="fab fa-google" style="font-size:2rem; color#34a853; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">HLS Player (m3u8)</div>
+                        <div class="item-subtitle">chrome extension</div>
+                        <div class="item-desc">Play m3u8 streams directly in browser.</div>
+                        <div class="item-footer"><a href="https://chromewebstore.google.com/detail/hls-player-m3u8-streaming/eakdijdofmnclopcffkkgmndadhbjgka?pli=1" target="_blank" class="cta-btn vault-action">install</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #662d91;"><i class="fas fa-shield-alt" style="font-size:2rem; color#ffffff; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Tubi</div>
+                        <div class="item-subtitle">free streaming</div>
+                        <div class="item-desc">Official free streaming service (ad-supported).</div>
+                        <div class="item-footer"><a href="https://gdpr.tubi.tv/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <!-- additional streaming tools: tv garden already in live tv, reelgood already in recs -->
+            </div>
+        </div>
+
+        <!-- ==================== ANIME ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-dragon"></i> Anime</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-anime', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-anime', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-anime" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1e1e2f;"><i class="fas fa-crown" style="font-size:2rem; color#f5c542; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">AnimeSalt</div>
+                        <div class="item-subtitle">subbed & dubbed</div>
+                        <div class="item-desc">Stream anime episodes.</div>
+                        <div class="item-footer"><a href="https://animesalt.cc/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2b1e2f;"><i class="fas fa-headphones" style="font-size:2rem; color#c44569; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">AnimeDub</div>
+                        <div class="item-subtitle">dubbed anime</div>
+                        <div class="item-desc">English dubbed anime series.</div>
+                        <div class="item-footer"><a href="https://animedub.co/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #0f3460;"><i class="fas fa-play" style="font-size:2rem; color#e94560; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">HiAnime</div>
+                        <div class="item-subtitle">free anime</div>
+                        <div class="item-desc">Watch anime online.</div>
+                        <div class="item-footer"><a href="https://hianime.do/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SPORTS STREAMING ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-futbol"></i> Sports Streaming</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-sports', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-sports', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-sports" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1b4d3e;"><i class="fas fa-bolt" style="font-size:2rem; color#ffb703; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">Streamed</div>
+                        <div class="item-subtitle">sports & more</div>
+                        <div class="item-desc">Live sports streaming.</div>
+                        <div class="item-footer"><a href="https://streamed.pk/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2d2d2d;"><i class="fas fa-chart-line" style="font-size:2rem; color#f39c12; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">SportSurge</div>
+                        <div class="item-subtitle">sports streams</div>
+                        <div class="item-desc">Popular sports streaming aggregator.</div>
+                        <div class="item-footer"><a href="https://sportsurge.bz/" target="_blank" class="cta-btn vault-action">stream</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #2c2c2c;"><i class="fas fa-bolt" style="font-size:2rem; color#e67e22; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">BuffStreams</div>
+                        <div class="item-subtitle">sports streams</div>
+                        <div class="item-desc">Live sports streaming (alternative).</div>
+                        <div class="item-footer"><a href="https://buffstreamsapp.com/" target="_blank" class="cta-btn vault-action">watch</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== YARR (INDEX / META) ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-anchor"></i> Yarr (piracy index)</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('cinema-yarr', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('cinema-yarr', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="cinema-yarr" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1c1c1c;"><i class="fas fa-skull-crossbones" style="font-size:2rem; color#d4af37; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">YarrList</div>
+                        <div class="item-subtitle">piracy index</div>
+                        <div class="item-desc">Curated list of streaming and download sites.</div>
+                        <div class="item-footer"><a href="https://yarrlist.net/" target="_blank" class="cta-btn vault-action">browse</a></div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-banner" style="background: #1c1c1c;"><i class="fas fa-skull-crossbones" style="font-size:2rem; color#d4af37; display:flex; justify-content:center; align-items:center; height:100%;"></i></div>
+                    <div class="item-content">
+                        <div class="item-title">YarrList (cc)</div>
+                        <div class="item-subtitle">mirror</div>
+                        <div class="item-desc">Alternate domain.</div>
+                        <div class="item-footer"><a href="https://yarrlist.cc/" target="_blank" class="cta-btn vault-action">browse</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
