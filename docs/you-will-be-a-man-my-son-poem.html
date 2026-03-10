@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>If — video + card with flashing green badge</title>
+    <!-- Fonts (root uses Inter, Fira Code, Orbitron) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Fira+Code&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <!-- minimal icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ----- ROOT exactly as provided ----- */
+        :root {
+            --primary: #ff5011;
+            --secondary: #333333;
+            --bg-dark: #000000;
+            --bg-darker: #050505;
+            --bg-card: #121212;
+            --bg-hover: #1a1a1a;
+            --text-main: #f5f5f5;
+            --text-muted: #a0a0a0;
+            --border: rgba(255,255,255,0.1);
+            --success: #51cf66;
+            --warning: #ffd43b;
+            --danger: #ef4444;
+            --shadow-glow: 0 0 30px rgba(255,80,17,0.15);
+            --transition: 0.3s;
+            --font-primary: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --font-tech: 'Orbitron', monospace;
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --sidebar-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* reset / base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        /* main container: everything centered */
+        .wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        /* --- VIDEO CONTAINER with hover effect --- */
+        .video-container {
+            width: 100%;
+            border-radius: 32px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-glow), 0 15px 30px -10px black;
+            
+            /* hover effect styles */
+            transition: var(--transition);
+            position: relative;
+        }
+
+        /* top border glow */
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .video-container:hover {
+            background: var(--bg-hover);
+            border-color: rgba(255,80,17,0.3);
+        }
+
+        .video-container:hover::before {
+            opacity: 1;
+        }
+
+        .video-container iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- POEM CARD with hover effect --- */
+        .poem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2.8rem 3rem 3rem;
+            border-radius: 32px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-glow), 0 20px 30px -10px black;
+        }
+
+        /* subtle top border glow */
+        .poem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .poem-card:hover {
+            background: var(--bg-hover);
+            border-color: rgba(255,80,17,0.3);
+        }
+
+        .poem-card:hover::before {
+            opacity: 1;
+        }
+
+        /* header inside card */
+        .poem-header {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.2rem;
+        }
+
+        .badge {
+            background: rgba(255,80,17,0.1);
+            border: 1px solid rgba(255,80,17,0.3);
+            color: var(--primary);
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            padding: 0.25rem 1.2rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* flashing green circle */
+        .flashing-green {
+            color: var(--success);
+            font-size: 0.7rem;
+            animation: flash 1.2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0.3; transform: scale(0.9); text-shadow: 0 0 0px var(--success); }
+            50% { opacity: 1; transform: scale(1.2); text-shadow: 0 0 10px var(--success); }
+            100% { opacity: 0.3; transform: scale(0.9); text-shadow: 0 0 0px var(--success); }
+        }
+
+        h1 {
+            font-family: var(--font-tech);
+            font-size: 2.8rem;
+            font-weight: 600;
+            line-height: 1.2;
+            background: linear-gradient(145deg, #fff 0%, var(--primary) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0.5rem 0 0.2rem;
+        }
+
+        .subhead {
+            font-family: var(--font-code);
+            color: var(--text-muted);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* poem stanzas */
+        .poem-lines {
+            margin: 2.2rem 0 2rem;
+            font-size: 1.05rem;
+        }
+
+        .stanza {
+            margin-bottom: 2rem;
+        }
+
+        .stanza p {
+            margin-bottom: 0.4rem;
+            line-height: 1.8;
+        }
+
+        .stanza .highlight {
+            color: var(--primary);
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(255,80,17,0.3);
+        }
+
+        .quote-icon {
+            color: var(--primary);
+            opacity: 0.5;
+            margin-right: 0.4rem;
+        }
+
+        /* footer */
+        .poem-footer {
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px dashed var(--border);
+            padding-top: 1.8rem;
+            color: var(--text-muted);
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+        }
+
+        .poet-signature i {
+            color: var(--warning);
+            margin-right: 8px;
+        }
+
+        .small-glow {
+            color: var(--primary);
+            background: rgba(255,80,17,0.08);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255,80,17,0.2);
+            font-size: 0.8rem;
+        }
+
+        /* mobile */
+        @media (max-width: 600px) {
+            .wrapper { padding: 1rem 1rem 2rem; }
+            .poem-card { padding: 1.8rem 1.5rem; }
+            h1 { font-size: 2.2rem; }
+            .video-container { border-radius: 24px; }
+            .poem-card { border-radius: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- VIDEO CONTAINER with hover effect -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/qhxwNKkH0f8?si=YJ4JzP5d5Q9G85-y" 
+                    title="YouTube video player - If by Rudyard Kipling (reading)" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+
+        <!-- POEM CARD with flashing green badge -->
+        <section class="poem-card">
+            <div class="poem-header">
+                <span class="badge">
+                    <i class="fas fa-circle flashing-green"></i> 
+                    RUDYARD KIPLING · 1910
+                </span>
+                <div class="subhead">
+                    <i class="fas fa-quote-right"></i>
+                    <span>“you'll be a Man, my son”</span>
+                </div>
+            </div>
+
+            <!-- full poem -->
+            <div class="poem-lines">
+                <div class="stanza">
+                    <p><span class="quote-icon"><i class="fas fa-feather"></i></span> If you can keep your head when all about you<br>Are losing theirs and blaming it on you;<br>If you can trust yourself when all men doubt you,<br>But make allowance for their doubting too;<br>If you can wait and not be tired by waiting,<br>Or, being lied about, don't deal in lies,<br>Or, being hated, don't give way to hating,<br>And yet don't look too good, nor talk too wise;</p>
+                </div>
+                <div class="stanza">
+                    <p>If you can dream—and not make dreams your master;<br>If you can think—and not make thoughts your aim;<br>If you can meet with Triumph and Disaster<br>And treat those two impostors just the same;<br>If you can bear to hear the truth you've spoken<br>Twisted by knaves to make a trap for fools,<br>Or watch the things you gave your life to, broken,<br>And stoop and build 'em up with worn-out tools;</p>
+                </div>
+                <div class="stanza">
+                    <p>If you can make one heap of all your winnings<br>And risk it on one turn of pitch-and-toss,<br>And lose, and start again at your beginnings<br>And never breathe a word about your loss;<br>If you can force your heart and nerve and sinew<br>To serve your turn long after they are gone,<br>And so hold on when there is nothing in you<br>Except the Will which says to them: "Hold on";</p>
+                </div>
+                <div class="stanza">
+                    <p>If you can talk with crowds and keep your virtue,<br>Or walk with Kings—nor lose the common touch;<br>If neither foes nor loving friends can hurt you;<br>If all men count with you, but none too much;<br>If you can fill the unforgiving minute<br>With sixty seconds' worth of distance run—<br><span class="highlight">Yours is the Earth and everything that's in it,</span><br><span class="highlight">And—which is more—you'll be a Man, my son!</span></p>
+                </div>
+            </div>
+
+            <div class="poem-footer">
+                <div class="poet-signature">
+                    <i class="fas fa-mask"></i> Rudyard Kipling · 1910
+                </div>
+                <div class="small-glow">
+                    <i class="fas fa-hourglass-half"></i> unforgiving minute
+                </div>
+            </div>
+
+            <!-- tiny extra detail -->
+            <div style="margin-top: 1.5rem; text-align: right; font-size: 0.75rem; color: var(--text-muted); border-top: 1px dotted var(--border); padding-top: 1rem;">
+                <span style="color: var(--primary);">⬤</span> green light flashing in badge
+            </div>
+        </section>
+    </div>
+</body>
+</html>
