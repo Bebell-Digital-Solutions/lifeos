@@ -1,5 +1,4 @@
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('content-container');
     const tags = document.querySelectorAll('.tag-btn');
