@@ -75,6 +75,32 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgressUI(currentTotal);
     }
 
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const banners = document.querySelectorAll('.item-banner');
+    
+    banners.forEach(banner => {
+        const defaultImg = banner.dataset.default;
+        const thumbImg = banner.dataset.thumb;
+        
+        if (defaultImg && thumbImg) {
+            banner.addEventListener('mouseenter', function() {
+                this.style.backgroundImage = `url('${thumbImg}')`;
+            });
+            
+            banner.addEventListener('mouseleave', function() {
+                this.style.backgroundImage = `url('${defaultImg}')`;
+            });
+        }
+    });
+});
+
+
+
+    
+
     // Dynamic Injection Logic
     async function loadSection(target) {
         try {
