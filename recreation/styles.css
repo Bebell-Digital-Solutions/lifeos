@@ -392,6 +392,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 /* YouTube Video Cards with Overlay */
 .yt-card.video-card {
     position: relative;
+    aspect-ratio: 16 / 9;
 }
 
 .yt-card.video-card iframe {
