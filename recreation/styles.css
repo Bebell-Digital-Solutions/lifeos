@@ -387,6 +387,39 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     aspect-ratio: 16 / 9;
     background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/637b3258efd5e99bc559d80fdf0b179295ff83f1.png');
 }
+
+
+/* YouTube Video Cards with Overlay */
+.yt-card.video-card {
+    position: relative;
+}
+
+.yt-card.video-card iframe {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    display: block;
+}
+
+.yt-card.video-card .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 120px); /* Adjust based on your content height */
+    z-index: 2;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.yt-card.video-card .video-overlay:hover {
+    opacity: 0;
+}
+
+
+
 .yt-content { 
     padding: 20px; 
     flex-grow: 1; 
