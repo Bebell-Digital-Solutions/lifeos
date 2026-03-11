@@ -271,9 +271,13 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     transition: background-image 0.2s ease-in-out;    
 }
 
+/* YouTube Channel Banner */
+.yt-banner.channel-banner { 
+    background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/f264e803a65f072e5dd10d68193629504ae74207.png') !important; 
+}
+
+/* Keep existing banner classes */
 .item-banner { aspect-ratio: 8 / 5; }
-.book-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png'); }
-.tool-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/166780e59e267092b33c09f1ef62ec4a93d6ebfd.png'); }
 
 /* Default Banner Images */
 .item-banner.default-banner { 
@@ -284,6 +288,10 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/637b3258efd5e99bc559d80fdf0b179295ff83f1.png') !important; 
 }
 
+.yt-banner.channel-banner { 
+    background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/f264e803a65f072e5dd10d68193629504ae74207.png') !important; 
+}
+
 .tool-banner { 
     background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/166780e59e267092b33c09f1ef62ec4a93d6ebfd.png') !important; 
 }
@@ -291,7 +299,6 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 .book-banner { 
     background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png') !important; 
 }
-
 
 
 
