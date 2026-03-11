@@ -23,32 +23,43 @@ document.addEventListener('DOMContentLoaded', () => {
         else progressFill.classList.remove('success');
     }
 
-
     
 
 
-// Function to initialize banner hover effects
+// Function to initialize banner hover effects with fallback
 function initializeBannerHovers() {
     const banners = document.querySelectorAll('.item-banner, .yt-banner');
+    const fallbackThumb = 'https://bucket.mlcdn.com/a/3336/3336910/images/6525355e3fd137e4abc1a3bcc60fca7258148938.png';
     
     banners.forEach(banner => {
-        const thumbImg = banner.dataset.thumb;
+        // Get the current background image to restore on mouse leave
+        const originalBg = banner.style.backgroundImage;
         
-        if (thumbImg) {
-            // Remove any existing listeners by cloning and replacing
-            const newBanner = banner.cloneNode(true);
-            banner.parentNode.replaceChild(newBanner, banner);
+        // Remove any existing listeners by cloning and replacing
+        const newBanner = banner.cloneNode(true);
+        banner.parentNode.replaceChild(newBanner, banner);
+        
+        newBanner.addEventListener('mouseenter', function() {
+            // Check if there's a data-thumb attribute, otherwise use fallback
+            const thumbImg = this.dataset.thumb || fallbackThumb;
             
-            newBanner.addEventListener('mouseenter', function() {
-                // Set thumbnail
-                this.style.backgroundImage = `url('${thumbImg}')`;
-            });
-            
-            newBanner.addEventListener('mouseleave', function() {
-                // Remove inline style to revert to CSS class
-                this.style.backgroundImage = '';
-            });
-        }
+            // Set thumbnail with !important to override any existing styles
+            this.style.setProperty('background-image', `url('${thumbImg}')`, 'important');
+            this.style.setProperty('background-size', 'cover', 'important');
+            this.style.setProperty('background-position', 'center', 'important');
+        });
+        
+        newBanner.addEventListener('mouseleave', function() {
+            // Restore original background from inline style
+            if (originalBg && originalBg !== 'none') {
+                this.style.setProperty('background-image', originalBg, 'important');
+            } else {
+                // If no original, clear the style
+                this.style.removeProperty('background-image');
+            }
+            this.style.setProperty('background-size', 'cover', 'important');
+            this.style.setProperty('background-position', 'center', 'important');
+        });
     });
 }
 
@@ -108,11 +119,22 @@ function initializeBannerHovers() {
                 });
             }
         });
+
+
+
+
         
         // Initialize banner hovers after card interactions are set up
         initializeBannerHovers();
         updateProgressUI(currentTotal);
     }
+
+
+
+
+
+
+
 
     // Dynamic Injection Logic
     async function loadSection(target) {
