@@ -268,6 +268,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-color: var(--bg-darker);
+    transition: background-image 0.2s ease-in-out;    
 }
 
 .item-banner { aspect-ratio: 8 / 5; }
