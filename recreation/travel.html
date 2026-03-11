@@ -342,3 +342,38 @@
         </div>
     </div>
 </section>
+
+
+
+
+<script>
+// Function to initialize banner hover effects
+function initializeBannerHovers() {
+    const banners = document.querySelectorAll('.item-banner, .yt-banner');
+    
+    banners.forEach(banner => {
+        const thumbImg = banner.dataset.thumb;
+        
+        if (thumbImg) {
+            // Remove any existing listeners by cloning and replacing
+            const newBanner = banner.cloneNode(true);
+            banner.parentNode.replaceChild(newBanner, banner);
+            
+            newBanner.addEventListener('mouseenter', function() {
+                // Set thumbnail with !important to override CSS
+                this.style.setProperty('background-image', `url('${thumbImg}')`, 'important');
+                this.style.setProperty('background-size', 'cover', 'important');
+                this.style.setProperty('background-position', 'center', 'important');
+            });
+            
+            newBanner.addEventListener('mouseleave', function() {
+                // Remove the inline style to revert to CSS class
+                this.style.removeProperty('background-image');
+                this.style.removeProperty('background-size');
+                this.style.removeProperty('background-position');
+            });
+        }
+    });
+}
+
+</script>
