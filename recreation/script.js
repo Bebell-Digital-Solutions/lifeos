@@ -39,19 +39,28 @@ function initializeBannerHovers() {
             banner.parentNode.replaceChild(newBanner, banner);
             
             newBanner.addEventListener('mouseenter', function() {
-                // Set thumbnail
-                this.style.backgroundImage = `url('${thumbImg}')`;
+                // Set thumbnail with !important to override CSS
+                this.style.setProperty('background-image', `url('${thumbImg}')`, 'important');
+                this.style.setProperty('background-size', 'cover', 'important');
+                this.style.setProperty('background-position', 'center', 'important');
             });
             
             newBanner.addEventListener('mouseleave', function() {
-                // Remove inline style to revert to CSS class
-                this.style.backgroundImage = '';
+                // Remove the inline style to revert to CSS class
+                this.style.removeProperty('background-image');
+                this.style.removeProperty('background-size');
+                this.style.removeProperty('background-position');
             });
         }
     });
 }
 
 
+
+
+
+
+    
     
 
     // Re-bind actions when new HTML is fetched
