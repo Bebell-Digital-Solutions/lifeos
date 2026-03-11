@@ -34,24 +34,22 @@ function initializeBannerHovers() {
         const thumbImg = banner.dataset.thumb;
         
         if (thumbImg) {
-            // Store the original background image (from CSS)
-            const originalBg = window.getComputedStyle(banner).backgroundImage;
-            
             // Remove any existing listeners by cloning and replacing
             const newBanner = banner.cloneNode(true);
             banner.parentNode.replaceChild(newBanner, banner);
             
             newBanner.addEventListener('mouseenter', function() {
+                // Set thumbnail
                 this.style.backgroundImage = `url('${thumbImg}')`;
             });
             
             newBanner.addEventListener('mouseleave', function() {
-                this.style.backgroundImage = originalBg;
+                // Remove inline style to revert to CSS class
+                this.style.backgroundImage = '';
             });
         }
     });
 }
-
 
 
     
