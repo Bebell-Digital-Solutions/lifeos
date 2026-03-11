@@ -23,53 +23,44 @@ document.addEventListener('DOMContentLoaded', () => {
         else progressFill.classList.remove('success');
     }
 
-    
-
-
-// Function to initialize banner hover effects with fallback
-function initializeBannerHovers() {
-    const banners = document.querySelectorAll('.item-banner, .yt-banner');
-    const fallbackThumb = 'https://bucket.mlcdn.com/a/3336/3336910/images/6525355e3fd137e4abc1a3bcc60fca7258148938.png';
-    
-    banners.forEach(banner => {
-        // Get the current background image to restore on mouse leave
-        const originalBg = banner.style.backgroundImage;
+    // Function to initialize banner hover effects with fallback
+    function initializeBannerHovers() {
+        const banners = document.querySelectorAll('.item-banner, .yt-banner');
+        const fallbackThumb = 'https://bucket.mlcdn.com/a/3336/3336910/images/6525355e3fd137e4abc1a3bcc60fca7258148938.png';
         
-        // Remove any existing listeners by cloning and replacing
-        const newBanner = banner.cloneNode(true);
-        banner.parentNode.replaceChild(newBanner, banner);
-        
-        newBanner.addEventListener('mouseenter', function() {
-            // Check if there's a data-thumb attribute, otherwise use fallback
-            const thumbImg = this.dataset.thumb || fallbackThumb;
+        banners.forEach(banner => {
+            const thumbImg = banner.dataset.thumb; // Check if there's a custom thumbnail
             
-            // Set thumbnail with !important to override any existing styles
-            this.style.setProperty('background-image', `url('${thumbImg}')`, 'important');
-            this.style.setProperty('background-size', 'cover', 'important');
-            this.style.setProperty('background-position', 'center', 'important');
+            // Remove any existing listeners by cloning and replacing
+            const newBanner = banner.cloneNode(true);
+            banner.parentNode.replaceChild(newBanner, banner);
+            
+            newBanner.addEventListener('mouseenter', function() {
+                // Use custom thumb if available, otherwise use fallback
+                const imageToShow = thumbImg || fallbackThumb;
+                
+                // Store the original background before changing
+                this.dataset.originalBg = this.style.backgroundImage;
+                
+                // Set the new background image
+                this.style.backgroundImage = `url('${imageToShow}')`;
+                this.style.backgroundSize = 'cover';
+                this.style.backgroundPosition = 'center';
+            });
+            
+            newBanner.addEventListener('mouseleave', function() {
+                // Restore the original background
+                if (this.dataset.originalBg) {
+                    this.style.backgroundImage = this.dataset.originalBg;
+                } else {
+                    // If no original was stored, clear the style
+                    this.style.backgroundImage = '';
+                }
+                this.style.backgroundSize = 'cover';
+                this.style.backgroundPosition = 'center';
+            });
         });
-        
-        newBanner.addEventListener('mouseleave', function() {
-            // Restore original background from inline style
-            if (originalBg && originalBg !== 'none') {
-                this.style.setProperty('background-image', originalBg, 'important');
-            } else {
-                // If no original, clear the style
-                this.style.removeProperty('background-image');
-            }
-            this.style.setProperty('background-size', 'cover', 'important');
-            this.style.setProperty('background-position', 'center', 'important');
-        });
-    });
-}
-
-
-
-
-
-
-    
-    
+    }
 
     // Re-bind actions when new HTML is fetched
     function initializeCardInteractions() {
@@ -120,21 +111,10 @@ function initializeBannerHovers() {
             }
         });
 
-
-
-
-        
         // Initialize banner hovers after card interactions are set up
         initializeBannerHovers();
         updateProgressUI(currentTotal);
     }
-
-
-
-
-
-
-
 
     // Dynamic Injection Logic
     async function loadSection(target) {
