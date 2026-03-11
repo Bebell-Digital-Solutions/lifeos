@@ -2,6 +2,29 @@
     <h1 class="page-title"><i class="fas fa-newspaper"></i> News & Current Events</h1>
 
     <div class="card">
+        <!-- ==================== SURVEILLANCE NEWS ==================== -->
+        <div class="sub-section">
+            <div class="flex-between section-header">
+                <h2><i class="fas fa-eye"></i> Surveillance & Privacy</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="setView('news-surveillance', 'grid', this)"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" onclick="setView('news-surveillance', 'list', this)"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+            <div id="news-surveillance" class="item-container grid-view">
+                <div class="item-card">
+                    <div class="item-banner default-banner" 
+                         data-thumb="https://bucket.mlcdn.com/a/3336/3336910/images/6525355e3fd137e4abc1a3bcc60fca7258148938.png"></div>
+                    <div class="item-content">
+                        <div class="item-title">World Monitor</div>
+                        <div class="item-subtitle">surveillance & security news</div>
+                        <div class="item-desc">Global monitoring of surveillance technologies, security developments, and privacy impacts worldwide.</div>
+                        <div class="item-footer"><a href="https://www.worldmonitor.app/" target="_blank" class="cta-btn vault-action">explore</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ==================== MAINSTREAM NEWS ==================== -->
         <div class="sub-section">
             <div class="flex-between section-header">
@@ -427,6 +450,9 @@
         </div>
     </div>
 </section>
+
+
+
 
 
 
