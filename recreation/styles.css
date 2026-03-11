@@ -300,6 +300,11 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png') !important; 
 }
 
+/* Default Thumbnail for Hover Effects */
+.default-thumbnail {
+    --thumbnail-url: url('https://bucket.mlcdn.com/a/3336/3336910/images/6525355e3fd137e4abc1a3bcc60fca7258148938.png');
+}
+
 
 
 
