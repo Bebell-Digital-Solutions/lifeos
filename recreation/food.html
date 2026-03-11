@@ -223,6 +223,7 @@
     </div>
 </section>
 
+
 <script>
 // Function to initialize banner hover effects
 function initializeBannerHovers() {
@@ -253,17 +254,4 @@ function initializeBannerHovers() {
     });
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    initializeBannerHovers();
-});
-
-// Also re-initialize when switching views (if needed)
-if (typeof setView === 'function') {
-    const originalSetView = setView;
-    window.setView = function(containerId, viewType, btn) {
-        originalSetView(containerId, viewType, btn);
-        setTimeout(initializeBannerHovers, 100); // Small delay to ensure DOM updates
-    };
-}
 </script>
