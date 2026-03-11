@@ -23,29 +23,38 @@ document.addEventListener('DOMContentLoaded', () => {
         else progressFill.classList.remove('success');
     }
 
-    // Function to initialize banner hover effects
-    function initializeBannerHovers() {
-        const banners = document.querySelectorAll('.item-banner');
+
+    
+
+// Function to initialize banner hover effects
+function initializeBannerHovers() {
+    const banners = document.querySelectorAll('.item-banner, .yt-banner');
+    
+    banners.forEach(banner => {
+        const thumbImg = banner.dataset.thumb;
         
-        banners.forEach(banner => {
-            const defaultImg = banner.dataset.default;
-            const thumbImg = banner.dataset.thumb;
+        if (thumbImg) {
+            // Store the original background image (from CSS)
+            const originalBg = window.getComputedStyle(banner).backgroundImage;
             
-            if (defaultImg && thumbImg) {
-                // Remove any existing listeners by cloning and replacing
-                const newBanner = banner.cloneNode(true);
-                banner.parentNode.replaceChild(newBanner, banner);
-                
-                newBanner.addEventListener('mouseenter', function() {
-                    this.style.backgroundImage = `url('${thumbImg}')`;
-                });
-                
-                newBanner.addEventListener('mouseleave', function() {
-                    this.style.backgroundImage = `url('${defaultImg}')`;
-                });
-            }
-        });
-    }
+            // Remove any existing listeners by cloning and replacing
+            const newBanner = banner.cloneNode(true);
+            banner.parentNode.replaceChild(newBanner, banner);
+            
+            newBanner.addEventListener('mouseenter', function() {
+                this.style.backgroundImage = `url('${thumbImg}')`;
+            });
+            
+            newBanner.addEventListener('mouseleave', function() {
+                this.style.backgroundImage = originalBg;
+            });
+        }
+    });
+}
+
+
+
+    
 
     // Re-bind actions when new HTML is fetched
     function initializeCardInteractions() {
