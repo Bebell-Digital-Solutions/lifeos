@@ -275,6 +275,27 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 .book-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png'); }
 .tool-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/166780e59e267092b33c09f1ef62ec4a93d6ebfd.png'); }
 
+/* Default Banner Images */
+.item-banner.default-banner { 
+    background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/bf0c30d5587d4546a5fe5083bba876cadb5b94f2.png') !important; 
+}
+
+.yt-banner.default-banner { 
+    background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/637b3258efd5e99bc559d80fdf0b179295ff83f1.png') !important; 
+}
+
+.tool-banner { 
+    background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/166780e59e267092b33c09f1ef62ec4a93d6ebfd.png') !important; 
+}
+
+.book-banner { 
+    background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png') !important; 
+}
+
+
+
+
+
 .list-view .item-banner { width: 240px; height: 100%; flex-shrink: 0; }
 
 /* Sub-sections within a single card */
