@@ -26,36 +26,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
 
+
 // Function to initialize banner hover effects
 function initializeBannerHovers() {
     const banners = document.querySelectorAll('.item-banner, .yt-banner');
     
     banners.forEach(banner => {
-        // Check for data-thumb attribute, if not present use default
-        let thumbImg = banner.dataset.thumb;
+        const thumbImg = banner.dataset.thumb;
         
-        if (!thumbImg) {
-            // Use default thumbnail from CSS variable
-            thumbImg = 'https://bucket.mlcdn.com/a/3336/3336910/images/6525355e3fd137e4abc1a3bcc60fca7258148938.png';
+        if (thumbImg) {
+            // Remove any existing listeners by cloning and replacing
+            const newBanner = banner.cloneNode(true);
+            banner.parentNode.replaceChild(newBanner, banner);
+            
+            newBanner.addEventListener('mouseenter', function() {
+                // Set thumbnail
+                this.style.backgroundImage = `url('${thumbImg}')`;
+            });
+            
+            newBanner.addEventListener('mouseleave', function() {
+                // Remove inline style to revert to CSS class
+                this.style.backgroundImage = '';
+            });
         }
-        
-        // Remove any existing listeners by cloning and replacing
-        const newBanner = banner.cloneNode(true);
-        banner.parentNode.replaceChild(newBanner, banner);
-        
-        newBanner.addEventListener('mouseenter', function() {
-            // Set thumbnail with !important to override CSS
-            this.style.setProperty('background-image', `url('${thumbImg}')`, 'important');
-            this.style.setProperty('background-size', 'cover', 'important');
-            this.style.setProperty('background-position', 'center', 'important');
-        });
-        
-        newBanner.addEventListener('mouseleave', function() {
-            // Remove the inline style to revert to CSS class
-            this.style.removeProperty('background-image');
-            this.style.removeProperty('background-size');
-            this.style.removeProperty('background-position');
-        });
     });
 }
 
