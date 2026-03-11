@@ -389,17 +389,20 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 }
 
 
-/* YouTube Video Cards with Overlay */
-.yt-card.video-card {
+
+
+
+/* Video wrapper for proper positioning */
+.yt-card.video-card .video-wrapper {
     position: relative;
+    width: 100%;
     aspect-ratio: 16 / 9;
+    overflow: hidden;
 }
 
 .yt-card.video-card iframe {
-    position: relative;
-    z-index: 1;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     border: none;
     display: block;
 }
@@ -409,7 +412,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 120px); /* Adjust based on your content height */
+    height: 100%;
     z-index: 2;
     cursor: pointer;
     transition: opacity 0.3s ease;
@@ -418,6 +421,11 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
 .yt-card.video-card .video-overlay:hover {
     opacity: 0;
 }
+
+
+
+
+
 
 
 
