@@ -270,7 +270,7 @@ h1 i, h2 i, h3 i { color: var(--primary); margin-right: 10px; }
     background-color: var(--bg-darker);
 }
 
-.item-banner { aspect-ratio: 4 / 3; }
+.item-banner { aspect-ratio: 8 / 5; }
 .book-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/e5631c702d713b0b104b78b72fca79ee90b229da.png'); }
 .tool-banner { background-image: url('https://bucket.mlcdn.com/a/3336/3336910/images/166780e59e267092b33c09f1ef62ec4a93d6ebfd.png'); }
 
